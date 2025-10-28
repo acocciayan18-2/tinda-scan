@@ -1,11 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <style name="AppSearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="android:editTextColor">@android:color/black</item>
         <item name="android:textColorHint">#999999</item>
         <item name="android:fontFamily">@font/notosansregular</item>
     </style>
+
+<!--To remove the violet background on buttons-->
+    <style name="NoActiveIndicator">
+        <item name="android:color">@android:color/transparent</item>
+    </style>
+
+
+<!--    To reduce gap between their name and the icon in bottom nav-->
+    <style name="CustomBottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavTextSmall.Active</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavTextSmall.Inactive</item>
+    </style>
+
+    <style name="BottomNavTextSmall.Active" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginTop">-2dp</item>
+    </style>
+
+    <style name="BottomNavTextSmall.Inactive" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginTop">-2dp</item>
+    </style>
+
+
+
+    <!-- Base style for all MaterialCardViews -->
+    <style name="BaseCardStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+    </style>
+
+    <!-- Variant for blue background -->
+    <style name="CardStyle.Blue" parent="BaseCardStyle">
+        <item name="cardBackgroundColor">@color/bgColorLightBlue</item>
+    </style>
+
+    <!-- Variant for white background and clickable -->
+    <style name="CardStyle.WhiteClickable" parent="BaseCardStyle">
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+
+
 
 </resources>
 

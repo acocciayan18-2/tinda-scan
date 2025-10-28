@@ -49,12 +49,8 @@
             tools:ignore="Instantiatable">
 
         </activity>
-        <activity
-            android:name=".Product"
-            android:exported="true"
-            tools:ignore="Instantiatable">
 
-        </activity>
+
         <activity
             android:name=".AddProductDialog"
             android:exported="true"

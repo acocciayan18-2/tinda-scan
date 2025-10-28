@@ -23,7 +23,14 @@
         android:background="@color/white"
         app:elevation="8dp"
         app:menu="@menu/bottom_nav_menu"
-        app:itemBackground="@drawable/bottom_nav_item_background"
-        app:labelVisibilityMode="labeled" />
+        app:itemIconTint="@color/primaryColor"
+        app:itemTextColor="@color/primaryColor"
+        app:itemRippleColor="@android:color/transparent"
+        app:itemBackground="@android:color/transparent"
+        style="@style/CustomBottomNav" />
+
+
+
+
 
 </RelativeLayout>

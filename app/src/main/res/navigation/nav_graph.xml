@@ -10,25 +10,69 @@
         android:name="com.example.tindascan.Home"
         android:label="Home"
         tools:layout="@layout/home" />
+
     <fragment
         android:id="@+id/nav_scan"
         android:name="com.example.tindascan.Scan"
         android:label="Scan"
         tools:layout="@layout/scan" />
+
     <fragment
         android:id="@+id/nav_cart"
         android:name="com.example.tindascan.Cart"
         android:label="Cart"
         tools:layout="@layout/cart" />
+
     <fragment
         android:id="@+id/nav_stock"
         android:name="com.example.tindascan.Stock"
         android:label="Stock"
         tools:layout="@layout/stock" />
+
     <fragment
         android:id="@+id/nav_more"
         android:name="com.example.tindascan.More"
         android:label="More"
-        tools:layout="@layout/more" />
+        tools:layout="@layout/more">
 
+        <action
+            android:id="@+id/action_nav_more_to_nav_history"
+            app:destination="@id/nav_history" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.example.tindascan.OrderHistoryFragment"
+        android:label="Order History"
+        tools:layout="@layout/fragment_order_history">
+        <action
+            android:id="@+id/action_nav_history_to_nav_details"
+            app:destination="@id/nav_details" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_details"
+        android:name="com.example.tindascan.OrderDetailsFragment"
+        android:label="Order Details"
+        tools:layout="@layout/fragment_order_details">
+        <argument
+            android:name="transactionId"
+            app:argType="long" />
+        <argument
+            android:name="totalAmount"
+            app:argType="float" /> </fragment>
+
+    <fragment
+        android:id="@+id/nav_add_product"
+        android:name="com.example.tindascan.AddProductFragment"
+        android:label="Add Product"
+        tools:layout="@layout/fragment_add_product" />
+
+    <!-- ✅ New Checkout Page Fragment -->
+    <fragment
+        android:id="@+id/nav_checkout"
+        android:name="com.example.tindascan.CheckoutFragment"
+        android:label="Checkout"
+        tools:layout="@layout/fragment_checkout" />
 </navigation>

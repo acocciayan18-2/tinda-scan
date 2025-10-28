@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="12dp"
     app:cardElevation="2dp"
     android:layout_marginBottom="12dp"
     app:cardBackgroundColor="@color/white">
@@ -19,39 +19,20 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/icon_bg_stock"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                app:cardBackgroundColor="#4A80FF"> <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_product_box"
-                app:tint="@color/white"
-                android:layout_gravity="center"/>
-            </com.google.android.material.card.MaterialCardView>
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_toEndOf="@id/icon_bg_stock"
-                android:layout_toStartOf="@id/tv_stock_count"
+                android:layout_alignParentStart="true"  android:layout_toStartOf="@id/tv_stock_count"
                 android:layout_centerVertical="true"
-                android:layout_marginHorizontal="16dp">
-
-                <TextView
-                    android:id="@+id/tv_product_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Premium Coffee Beans"
-                    android:textColor="@color/primaryColor"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/notosanssemibold" />
+                android:layout_marginEnd="16dp"> <TextView
+                android:id="@+id/tv_product_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Premium Coffee Beans"
+                android:textColor="@color/primaryColor"
+                android:textSize="16sp"
+                android:fontFamily="@font/notosanssemibold" />
 
                 <TextView
                     android:id="@+id/tv_product_category"
@@ -103,8 +84,8 @@
                     android:id="@+id/tv_product_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$12.99"
-                    android:textColor="#2ECC71"
+                    android:text="P12.99"
+                    android:textColor="#00943F"
                     android:textSize="16sp"
                     android:fontFamily="@font/notosanssemibold" />
             </LinearLayout>
@@ -128,7 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1234567890123"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/primaryColor"
                     android:textSize="16sp"
                     android:fontFamily="@font/notosanssemibold" />
             </LinearLayout>
@@ -140,28 +121,9 @@
             android:background="#F0F0F0" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_edit"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Edit"
-                android:textSize="14sp"
-                android:fontFamily="@font/notosanssemibold"
-                app:icon="@drawable/ic_edit"
-                app:iconTint="#666666"
-                android:textColor="#666666" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="#F0F0F0"
-                android:layout_marginVertical="8dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_delete"
@@ -172,7 +134,7 @@
                 android:text="Delete"
                 android:textSize="14sp"
                 android:fontFamily="@font/notosanssemibold"
-                app:icon="@drawable/ic_delete"
+                app:icon="@drawable/ic_trash_stroke"
                 app:iconTint="#D32F2F"
                 android:textColor="#D32F2F" />
         </LinearLayout>

@@ -16,13 +16,26 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // ✅ FIX 1: Add this block to re-enable BuildConfig
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
-        release {
+        getByName("debug") {
+            // Set to 'false' to BYPASS the splash screen in debug builds
+            buildConfigField("boolean", "SHOW_SPLASH", "false")
+        }
+
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            // ✅ FIX 2: Set to 'true' to SHOW the splash screen in release builds
+            buildConfigField("boolean", "SHOW_SPLASH", "false")
         }
     }
 
@@ -33,6 +46,8 @@ android {
 }
 
 dependencies {
+    implementation (libs.gson)
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -40,6 +55,8 @@ dependencies {
     implementation(libs.recyclerview)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.firebase.crashlytics.buildtools)
 
     // ✅ CameraX (compatible with compileSdk 35)
     val cameraxVersion = "1.3.3"
@@ -63,6 +80,4 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.google.android.material:material:1.12.0")
-
-
 }

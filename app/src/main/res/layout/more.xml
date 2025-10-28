@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:background="#F7F8FA"
     android:scrollbars="none"
-    tools:context=".MoreFragment">
+    android:fitsSystemWindows="true"
+    tools:context=".More">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,16 +43,12 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_orders_history"
+            style="@style/CardStyle.WhiteClickable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            android:layout_marginBottom="12dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/white">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
+                android:id="@+id/order_history_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
@@ -117,14 +114,9 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_settings"
+            style="@style/CardStyle.WhiteClickable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            android:layout_marginBottom="12dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/white">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -192,14 +184,9 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_export"
+            style="@style/CardStyle.WhiteClickable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            android:layout_marginBottom="12dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/white">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -266,14 +253,9 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_import"
+            style="@style/CardStyle.WhiteClickable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            android:layout_marginBottom="12dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/white">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -340,14 +322,9 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_reset_pin"
+            style="@style/CardStyle.WhiteClickable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            android:layout_marginBottom="12dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/white">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_width="match_parent"

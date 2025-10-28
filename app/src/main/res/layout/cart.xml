@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cart_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F7F8FA"
     tools:context=".Cart">
 
-    <!-- Camera Preview -->
+
+
+    <!-- Camera Preview (25% height) -->
     <androidx.camera.view.PreviewView
         android:id="@+id/camera_preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="2"
 
-    <!-- Transparent scanner overlay -->
-    <FrameLayout
-        android:id="@+id/scanner_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:adjustViewBounds="true" />
 
-    <!-- Unified Cart + Footer -->
+    <!-- Cart Section (75% height) -->
     <LinearLayout
         android:id="@+id/cart_container"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_gravity="bottom"
+        android:layout_height="0dp"
+        android:layout_weight="4"
         android:orientation="vertical"
         android:background="@drawable/cart_background"
-        android:elevation="12dp"
         android:padding="0dp">
 
         <!-- Cart Title -->
@@ -57,7 +57,7 @@
                 android:orientation="vertical" />
         </ScrollView>
 
-        <!-- Fixed Footer -->
+        <!-- Footer -->
         <LinearLayout
             android:id="@+id/footer_container"
             android:layout_width="match_parent"
@@ -71,20 +71,40 @@
             android:background="@android:color/white">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_checkout"
+                android:id="@+id/btn_proceed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Checkout"
+                android:text="Proceed"
                 android:textAllCaps="false"
                 android:fontFamily="@font/notosanssemibold"
                 app:cornerRadius="12dp"
-                android:paddingHorizontal="24dp"
+                android:paddingHorizontal="18dp"
                 android:paddingVertical="8dp"
-                android:layout_gravity="center_vertical"
                 app:strokeWidth="1dp"
                 android:textSize="15sp"
                 app:backgroundTint="@color/primaryColor"
-            android:textColor="@color/white" />
+                android:textColor="@color/white" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_clear_cart"
+
+                android:layout_width="24dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                android:backgroundTint="@android:color/transparent"
+                app:icon="@drawable/ic_trash_stroke"
+            app:iconTint="@color/red_error"
+            app:iconSize="20dp"
+            android:contentDescription="Clear cart" />
+
+
 
 
             <LinearLayout
@@ -107,14 +127,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="₱0.00"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:fontFamily="@font/notosansbold"
                     android:textColor="@color/primaryColor"
                     android:layout_marginTop="-4dp" />
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
