@@ -121,24 +121,35 @@
             android:background="#F0F0F0" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingHorizontal="8dp"> <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_delete"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Delete"
+            android:textSize="14sp"
+            android:fontFamily="@font/notosanssemibold"
+            app:icon="@drawable/ic_trash_stroke"
+            app:iconTint="#D32F2F"
+            android:textColor="#D32F2F" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_delete"
+                android:id="@+id/btn_edit"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Delete"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Edit"
                 android:textSize="14sp"
                 android:fontFamily="@font/notosanssemibold"
-                app:icon="@drawable/ic_trash_stroke"
-                app:iconTint="#D32F2F"
-                android:textColor="#D32F2F" />
-        </LinearLayout>
-
+                app:icon="@drawable/ic_edit"
+                app:iconTint="#1976D2" android:textColor="#1976D2" /> </LinearLayout>
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

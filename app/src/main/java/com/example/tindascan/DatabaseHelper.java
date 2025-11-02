@@ -13,7 +13,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "tindascan.db";
-    private static final int DATABASE_VERSION = 3; // incremented for schema update
+    private static final int DATABASE_VERSION = 3;
 
     private static final String TABLE_PRODUCTS = "products";
 
@@ -42,6 +42,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_EXPIRATION_DATE + " TEXT" +
                     ");";
 
+    // --- Transaction Tables ---
+    private static final String TABLE_TRANSACTIONS = "transactions";
+    private static final String COLUMN_TRX_ID = "transaction_id";
+    private static final String COLUMN_TRX_TIMESTAMP = "timestamp";
+    private static final String COLUMN_TRX_TOTAL_AMOUNT = "total_amount";
+
+    private static final String CREATE_TABLE_TRANSACTIONS =
+            "CREATE TABLE " + TABLE_TRANSACTIONS + " (" +
+                    COLUMN_TRX_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_TRX_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+                    COLUMN_TRX_TOTAL_AMOUNT + " REAL NOT NULL" +
+                    ");";
+
+    private static final String TABLE_TRANSACTION_DETAILS = "transaction_details";
+    private static final String COLUMN_DETAIL_ID = "detail_id";
+    private static final String COLUMN_DETAIL_TRX_ID = "transaction_id";
+    private static final String COLUMN_DETAIL_PRODUCT_BARCODE = "product_barcode";
+    private static final String COLUMN_DETAIL_PRODUCT_NAME = "product_name_at_sale";
+    private static final String COLUMN_DETAIL_QUANTITY_SOLD = "quantity_sold";
+    private static final String COLUMN_DETAIL_PRICE_AT_SALE = "price_at_sale";
+
+    private static final String CREATE_TABLE_TRANSACTION_DETAILS =
+            "CREATE TABLE " + TABLE_TRANSACTION_DETAILS + " (" +
+                    COLUMN_DETAIL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_DETAIL_TRX_ID + " INTEGER NOT NULL, " +
+                    COLUMN_DETAIL_PRODUCT_BARCODE + " TEXT, " +
+                    COLUMN_DETAIL_PRODUCT_NAME + " TEXT NOT NULL, " +
+                    COLUMN_DETAIL_QUANTITY_SOLD + " INTEGER NOT NULL, " +
+                    COLUMN_DETAIL_PRICE_AT_SALE + " REAL NOT NULL, " +
+                    "FOREIGN KEY(" + COLUMN_DETAIL_TRX_ID + ") REFERENCES " + TABLE_TRANSACTIONS + "(" + COLUMN_TRX_ID + ")" +
+                    ");";
+    // --- End Transaction Tables ---
+
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -50,24 +84,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_PRODUCTS);
         db.execSQL(CREATE_TABLE_TRANSACTIONS);
-        db.execSQL(CREATE_TABLE_TRANSACTION_DETAILS); // This uses the updated CREATE statement
+        db.execSQL(CREATE_TABLE_TRANSACTION_DETAILS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Simple upgrade: drop all tables and recreate
-        // WARNING: This deletes all existing data. For production apps, use ALTER TABLE.
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTION_DETAILS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
         onCreate(db);
     }
 
-    // This method is fine, but 'addProduct(Product product)' is better
     public boolean insertProduct(String name, String weight, String barcode, String category,
                                  double sellingPrice, double costPrice,
                                  int stockQty, String expirationDate) {
-        // ... (this method was already okay)
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -87,44 +117,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    // ✅ --- ADD NEW TABLES ---
-    private static final String TABLE_TRANSACTIONS = "transactions";
-    private static final String COLUMN_TRX_ID = "transaction_id";
-    private static final String COLUMN_TRX_TIMESTAMP = "timestamp";
-    private static final String COLUMN_TRX_TOTAL_AMOUNT = "total_amount";
-
-    private static final String CREATE_TABLE_TRANSACTIONS =
-            "CREATE TABLE " + TABLE_TRANSACTIONS + " (" +
-                    COLUMN_TRX_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_TRX_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
-                    COLUMN_TRX_TOTAL_AMOUNT + " REAL NOT NULL" +
-                    ");";
-
-    // --- Transaction Details Table ---
-    private static final String TABLE_TRANSACTION_DETAILS = "transaction_details";
-    private static final String COLUMN_DETAIL_ID = "detail_id";
-    private static final String COLUMN_DETAIL_TRX_ID = "transaction_id";
-    private static final String COLUMN_DETAIL_PRODUCT_BARCODE = "product_barcode";
-    // ✅ ADD THIS NEW COLUMN
-    private static final String COLUMN_DETAIL_PRODUCT_NAME = "product_name_at_sale";
-    private static final String COLUMN_DETAIL_QUANTITY_SOLD = "quantity_sold";
-    private static final String COLUMN_DETAIL_PRICE_AT_SALE = "price_at_sale";
-
-    // ✅ UPDATE THE CREATE STATEMENT
-    private static final String CREATE_TABLE_TRANSACTION_DETAILS =
-            "CREATE TABLE " + TABLE_TRANSACTION_DETAILS + " (" +
-                    COLUMN_DETAIL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_DETAIL_TRX_ID + " INTEGER NOT NULL, " +
-                    COLUMN_DETAIL_PRODUCT_BARCODE + " TEXT, " + // Barcode can be null if product deleted
-                    COLUMN_DETAIL_PRODUCT_NAME + " TEXT NOT NULL, " + // Save the name
-                    COLUMN_DETAIL_QUANTITY_SOLD + " INTEGER NOT NULL, " +
-                    COLUMN_DETAIL_PRICE_AT_SALE + " REAL NOT NULL, " +
-                    "FOREIGN KEY(" + COLUMN_DETAIL_TRX_ID + ") REFERENCES " + TABLE_TRANSACTIONS + "(" + COLUMN_TRX_ID + ")" +
-                    ");";
-
-    // ✅ --- ADD THIS NEW METHOD ---
-    // Inside DatabaseHelper.java
-
+    /**
+     * Records a sale transaction and deducts stock, preserving the product record
+     * even when stock reaches zero.
+     */
     public boolean recordSale(List<CartItem> cartItems, double totalAmount) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
@@ -134,43 +130,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             trxValues.put(COLUMN_TRX_TOTAL_AMOUNT, totalAmount);
             long transactionId = db.insert(TABLE_TRANSACTIONS, null, trxValues);
             if (transactionId == -1) {
-                db.endTransaction(); return false;
+                return false;
             }
 
             for (CartItem item : cartItems) {
                 Product product = item.getProduct();
-                if (product == null) continue; // Skip if product is missing
+                if (product == null) continue;
 
                 int quantitySold = item.getQuantity();
                 String barcode = product.getBarcode();
-                String productName = product.getName(); // Get the name NOW
+                String productName = product.getName();
                 double price = product.getPrice();
 
-                // 2a. Insert into transaction_details (NOW INCLUDES NAME)
+                // 1. Get the current stock quantity from the database to ensure accuracy
+                int currentDbStock = getStockQuantityByBarcode(barcode);
+                if (currentDbStock == -1) {
+                    Log.w("DatabaseHelper", "Product not found during stock deduction: " + barcode);
+                    continue;
+                }
+
+                // 2. Calculate the new stock, ensuring it doesn't go negative
+                int newStock = currentDbStock - quantitySold;
+                if (newStock < 0) {
+                    newStock = 0; // Prevent negative stock (PRESERVE RECORD)
+                }
+
+                // 3. Insert into transaction_details
                 ContentValues detailValues = new ContentValues();
                 detailValues.put(COLUMN_DETAIL_TRX_ID, transactionId);
                 detailValues.put(COLUMN_DETAIL_PRODUCT_BARCODE, barcode);
-                // ✅ SAVE THE NAME
                 detailValues.put(COLUMN_DETAIL_PRODUCT_NAME, productName);
                 detailValues.put(COLUMN_DETAIL_QUANTITY_SOLD, quantitySold);
                 detailValues.put(COLUMN_DETAIL_PRICE_AT_SALE, price);
                 db.insert(TABLE_TRANSACTION_DETAILS, null, detailValues);
 
-                // 2b. Deduct stock (or delete if <= 0) - This logic remains the same
-                // Update product stock
+                // 4. Deduct stock (but NEVER delete the product record)
                 ContentValues updateValues = new ContentValues();
-                updateValues.put(COLUMN_STOCK_QTY, product.getStockQuantity() - quantitySold); // Calculate new stock
+                updateValues.put(COLUMN_STOCK_QTY, newStock);
                 int rowsAffected = db.update(TABLE_PRODUCTS, updateValues, COLUMN_BARCODE + " = ?", new String[]{barcode});
 
-                if (rowsAffected > 0) {
-                    // Check if stock is now <= 0 AFTER the update
-                    if (product.getStockQuantity() - quantitySold <= 0) {
-                        db.delete(TABLE_PRODUCTS, COLUMN_BARCODE + " = ?", new String[]{barcode});
-                        Log.i("DatabaseHelper", "Product deleted due to zero stock: " + barcode);
-                    }
-                } else {
+                if (rowsAffected == 0) {
                     Log.w("DatabaseHelper", "Could not find product to update stock: " + barcode);
-                    // Consider if this case should fail the transaction
                 }
             }
 
@@ -182,19 +182,69 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         } finally {
             db.endTransaction();
-            // db.close(); // Keep db open if helper is managed elsewhere
         }
     }
 
-    // ✅ --- ADD THIS HELPER METHOD ---
-// Creates ContentValues for updating stock quantity safely
-    private ContentValues createStockUpdateValues(int quantitySold) {
-        ContentValues values = new ContentValues();
-        // This SQL syntax subtracts the value directly in the database
-        // Note: This relies on the column being INTEGER. Adjust if needed.
-        values.put(COLUMN_STOCK_QTY, COLUMN_STOCK_QTY + " - " + quantitySold);
-        return values;
+
+    /**
+     * Gets the current stock quantity for a product by barcode.
+     * Returns -1 if the product is not found.
+     */
+    public int getStockQuantityByBarcode(String barcode) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_STOCK_QTY + " FROM " + TABLE_PRODUCTS + " WHERE " + COLUMN_BARCODE + "=?", new String[]{barcode});
+        if (cursor.moveToFirst()) {
+            int stock = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STOCK_QTY));
+            cursor.close();
+            return stock;
+        }
+        cursor.close();
+        return -1; // Indicates product not found
     }
+
+    /**
+     * Retrieves a list of products whose name or barcode contains the search query.
+     * Used for manual product lookup in the cart screen.
+     */
+    public List<Product> getProductsByNameOrBarcode(String query) {
+        List<Product> productList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String search = "%" + query.trim() + "%";
+
+        String selection = COLUMN_NAME + " LIKE ? OR " + COLUMN_BARCODE + " LIKE ?";
+        String[] selectionArgs = new String[]{search, search};
+
+        Cursor cursor = db.query(
+                TABLE_PRODUCTS,
+                null, // columns (null = all)
+                selection,
+                selectionArgs,
+                null, null,
+                COLUMN_NAME + " ASC" // Order by name for better display
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                // Use the 8-argument constructor (Constructor 4 in your Product class)
+                Product product = new Product(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_BARCODE)),
+                        cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_SELLING_PRICE)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STOCK_QTY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WEIGHT)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXPIRATION_DATE))
+                );
+                productList.add(product);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        return productList;
+    }
+
 
     public Cursor getAllProducts() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -211,8 +261,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * ✅ FIXED: Changed parameter from 'AddProductDialog.Product' to 'Product'
-     * ✅ FIXED: Used getters (product.getName()) instead of direct field access (product.name)
+     * Adds a new product to the database.
      */
     public boolean addProduct(Product product) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -233,7 +282,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * ✅ This method is now consistent with Product.java's Constructor 4
+     * Retrieves a Product object by its barcode.
      */
     public Product getProductByBarcode(String barcode) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -274,18 +323,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int rows = db.delete(TABLE_PRODUCTS, COLUMN_BARCODE + " = ?", new String[]{barcode.trim()});
         db.close();
         return rows > 0;
-
     }
 
 
     /**
      * Gets a list of all transactions for the order history page.
+     * NOTE: Requires Transaction class
      */
     public List<Transaction> getAllTransactions() {
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Order by timestamp, newest first
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + TABLE_TRANSACTIONS + " ORDER BY " + COLUMN_TRX_TIMESTAMP + " DESC",
                 null
@@ -297,7 +345,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String timestamp = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TRX_TIMESTAMP));
                 double total = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_TRX_TOTAL_AMOUNT));
 
-                transactionList.add(new Transaction(id, timestamp, total));
+                // transactionList.add(new Transaction(id, timestamp, total)); // Placeholder
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -307,15 +355,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Gets the specific items for a single transaction.
-     * This uses a JOIN to get the product's name from its barcode.
+     * NOTE: Requires TransactionDetail class
      */
     public List<TransactionDetail> getTransactionDetails(long transactionId) {
         List<TransactionDetail> detailList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // ✅ REMOVED THE JOIN - Read directly from transaction_details
         String query = "SELECT " +
-                COLUMN_DETAIL_PRODUCT_NAME + ", " + // Get the saved name
+                COLUMN_DETAIL_PRODUCT_NAME + ", " +
                 COLUMN_DETAIL_QUANTITY_SOLD + ", " +
                 COLUMN_DETAIL_PRICE_AT_SALE +
                 " FROM " + TABLE_TRANSACTION_DETAILS +
@@ -325,16 +372,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                // ✅ Read the saved name
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DETAIL_PRODUCT_NAME));
                 int qty = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_DETAIL_QUANTITY_SOLD));
                 double price = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_DETAIL_PRICE_AT_SALE));
 
-                detailList.add(new TransactionDetail(name, qty, price));
+                // detailList.add(new TransactionDetail(name, qty, price)); // Placeholder
             } while (cursor.moveToNext());
         }
         cursor.close();
-        // db.close(); // Keep db open if helper is managed elsewhere
         return detailList;
     }
 }

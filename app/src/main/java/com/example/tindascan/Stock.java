@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter; // Added import
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import androidx.appcompat.widget.SearchView;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
@@ -26,6 +28,20 @@ public class Stock extends Fragment implements AddProductFragment.OnProductAdded
     private StockAdapter adapter;
     private List<Product> productList;
     private DatabaseHelper dbHelper;
+    private SearchView searchView;
+    private final String[] categories = {
+            "All Categories", // Add "All Categories" as the first item for resetting the filter
+            "Food Staples",
+            "Canned Goods",
+            "Instant Foods",
+            "Snacks & Candies",
+            "Beverages",
+            "Toiletries",
+            "Household Cleaning",
+            "Medicine",
+            "Other"
+    };
+    private AutoCompleteTextView dropdownCategories;
 
     public Stock() {
         super(R.layout.stock);
@@ -45,7 +61,7 @@ public class Stock extends Fragment implements AddProductFragment.OnProductAdded
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         productList = new ArrayList<>();
-        adapter = new StockAdapter(getContext(), productList, new StockAdapter.OnProductActionListener() {
+        adapter = new StockAdapter(requireContext(), productList, new StockAdapter.OnProductActionListener() {
             @Override
             public void onDelete(Product product) {
                 confirmAndDeleteProduct(product);
@@ -59,16 +75,75 @@ public class Stock extends Fragment implements AddProductFragment.OnProductAdded
 
         recyclerView.setAdapter(adapter);
 
+        // --- SEARCH VIEW LOGIC START ---
+        searchView = view.findViewById(R.id.search_view);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (adapter != null) {
+                    // Update: Call applyCategoryFilter to handle compound filtering
+                    String selectedCategory = dropdownCategories.getText().toString();
+                    applyCategoryFilter(selectedCategory, newText);
+                }
+                return true;
+            }
+        });
+        // --- SEARCH VIEW LOGIC END ---
+
+        dropdownCategories = view.findViewById(R.id.dropdown_categories);
+
+        // Create an ArrayAdapter using the defined categories array
+        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                categories
+        );
+        dropdownCategories.setAdapter(categoriesAdapter);
+
+        // Set the default text and selection (optional, but good practice)
+        dropdownCategories.setText(categories[0], false);
+
+        // Set the item click listener to perform the filtering
+        dropdownCategories.setOnItemClickListener((parent, view1, position, id) -> {
+            String selectedCategory = categories[position];
+            // Update: Pass current query text when changing category
+            String currentQuery = searchView.getQuery() != null ? searchView.getQuery().toString() : "";
+            applyCategoryFilter(selectedCategory, currentQuery);
+        });
+        // --- CATEGORY DROPDOWN LOGIC END ---
+
         addProductButton = view.findViewById(R.id.btn_add_product);
         addProductButton.setOnClickListener(v -> {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.nav_add_product);
         });
 
-
-
         loadProductsFromDatabase();
     }
+
+    // New method to handle applying the category filter (accepts current query)
+    private void applyCategoryFilter(String selectedCategory, String currentQuery) {
+        if (adapter != null) {
+            // Standardize the filter constraint using a custom token and delimiter
+            String filterConstraint;
+            if (selectedCategory.equals("All Categories")) {
+                // When "All Categories" is selected, only the search query matters
+                filterConstraint = "SEARCH_ONLY:" + currentQuery;
+            } else {
+                // Use the compound filter format: CATEGORY_TOKEN:CategoryName:SearchQuery
+                filterConstraint = "COMPOUND:" + selectedCategory + ":" + currentQuery;
+            }
+            adapter.getFilter().filter(filterConstraint);
+        }
+    }
+
 
     private void showAddProductDialog() {
         NavHostFragment.findNavController(this)
@@ -77,6 +152,7 @@ public class Stock extends Fragment implements AddProductFragment.OnProductAdded
 
 
     private void loadProductsFromDatabase() {
+        // ... (loading logic remains the same)
         productList.clear();
         Cursor cursor = dbHelper.getAllProducts();
 
@@ -90,16 +166,15 @@ public class Stock extends Fragment implements AddProductFragment.OnProductAdded
                 int stockQty = cursor.getInt(cursor.getColumnIndexOrThrow("stock_quantity"));
                 String weight = cursor.getString(cursor.getColumnIndexOrThrow("weight"));
 
-                // ✅ FIX 1: Get the expiration date
                 String expirationDate = cursor.getString(cursor.getColumnIndexOrThrow("expiration_date"));
 
-                // ✅ FIX 2: Use the 8-argument constructor from Product.java
                 productList.add(new Product(id, name, category, barcode, sellingPrice, stockQty, weight, expirationDate));
 
             } while (cursor.moveToNext());
             cursor.close();
         }
 
+        // Must notify the adapter that the initial list has changed
         adapter.notifyDataSetChanged();
     }
 
@@ -120,9 +195,9 @@ public class Stock extends Fragment implements AddProductFragment.OnProductAdded
                 .show();
     }
 
+
     @Override
     public void onProductAdded(Product newProduct) {
-        // This is the correct listener method
         loadProductsFromDatabase();
     }
 }

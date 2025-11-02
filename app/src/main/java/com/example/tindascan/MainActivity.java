@@ -6,10 +6,14 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.navigation.NavController;
+
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.activity.EdgeToEdge;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         if (BuildConfig.SHOW_SPLASH) {
             SplashScreen.installSplashScreen(this);
         }
+        EdgeToEdge.enable(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
