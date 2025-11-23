@@ -11,10 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter; // Added for search dialog
-import android.widget.FrameLayout;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView; // Added for in-line search results
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +30,7 @@ import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.appcompat.widget.SearchView; // Added
+import androidx.appcompat.widget.SearchView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -67,7 +67,13 @@ public class Cart extends Fragment {
     private static final long SCAN_COOLDOWN_MS = 2000;
     private MaterialButton btnClearCart;
     private LinearLayout cartItemsContainer;
-    private SearchView manualSearchView; // New Declaration
+    private SearchView manualSearchView;
+
+    // --- NEW VARIABLES FOR IN-LINE SEARCH ---
+    private ListView searchResultsList;
+    private ArrayAdapter<String> searchAdapter;
+    private List<Product> currentSearchResults = new ArrayList<>();
+    // --- END NEW VARIABLES ---
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -106,6 +112,35 @@ public class Cart extends Fragment {
         previewView = view.findViewById(R.id.camera_preview);
         beepSound = MediaPlayer.create(requireContext(), R.raw.beep);
 
+        // --- MANUAL SEARCH LIST INIT ---
+        searchResultsList = view.findViewById(R.id.search_results_list);
+        searchAdapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_list_item_1,
+                new ArrayList<>());
+        searchResultsList.setAdapter(searchAdapter);
+        searchResultsList.setVisibility(View.GONE); // Start hidden
+
+        // Handle clicks on the search results list
+        searchResultsList.setOnItemClickListener((parent, view1, position, id) -> {
+            // Check if the item clicked is "No products found."
+            if (currentSearchResults.isEmpty() || position >= currentSearchResults.size()) {
+                // Do nothing, or hide the list if "No products found" was clicked
+                manualSearchView.setQuery("", false);
+                manualSearchView.clearFocus();
+                searchResultsList.setVisibility(View.GONE);
+                return;
+            }
+
+            Product selectedProduct = currentSearchResults.get(position);
+            manualAddToCart(selectedProduct);
+
+            // Clear search view and hide the list after selection
+            manualSearchView.setQuery("", false);
+            manualSearchView.clearFocus();
+            searchResultsList.setVisibility(View.GONE);
+        });
+        // --- END MANUAL SEARCH LIST INIT ---
+
         cartStorage = new CartStorage(requireContext());
         cartItems = cartStorage.loadCart();
         populateSavedCart();
@@ -130,18 +165,30 @@ public class Cart extends Fragment {
         manualSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                showProductSearchDialog(query);
-                manualSearchView.clearFocus();
+                // When submitted, perform final search and display
+                displaySearchResults(query);
+                manualSearchView.clearFocus(); // Hide keyboard
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // Show results dynamically after 3 characters, but let submit handle the final search
-                if (newText.length() > 2) {
-                    showProductSearchDialog(newText);
+                if (newText.length() > 2) { // Start searching after 3 characters
+                    displaySearchResults(newText);
+                } else {
+                    // Hide list when query is too short or empty
+                    searchResultsList.setVisibility(View.GONE);
+                    currentSearchResults.clear();
+                    searchAdapter.clear();
                 }
                 return true;
+            }
+        });
+
+        // Ensure the list disappears when the search view loses focus AND the query is empty
+        manualSearchView.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus && manualSearchView.getQuery().length() == 0) {
+                searchResultsList.setVisibility(View.GONE);
             }
         });
         // --- END MANUAL SEARCH INIT ---
@@ -152,6 +199,7 @@ public class Cart extends Fragment {
 
         btnProceed.setOnClickListener(v -> {
             if (cartItems.isEmpty()) {
+                Toast.makeText(requireContext(), "Your cart is empty.", Toast.LENGTH_SHORT).show();
                 return;
             }
             NavHostFragment.findNavController(this)
@@ -159,39 +207,38 @@ public class Cart extends Fragment {
         });
     }
 
-    // --- MANUAL SEARCH DIALOG METHOD ---
-    private void showProductSearchDialog(String query) {
-        if (query.trim().isEmpty()) return;
+    // --- NEW SEARCH DISPLAY METHOD (Replaces Dialog) ---
+    private void displaySearchResults(String query) {
+        String trimmedQuery = query.trim();
 
-        List<Product> searchResults = dbHelper.getProductsByNameOrBarcode(query);
-
-        if (searchResults == null || searchResults.isEmpty()) {
+        if (trimmedQuery.isEmpty()) {
+            searchAdapter.clear();
+            searchResultsList.setVisibility(View.GONE);
+            currentSearchResults.clear();
             return;
         }
 
-        final List<String> displayList = new ArrayList<>();
-        for (Product product : searchResults) {
-            String price = String.format("₱%.2f", product.getPrice());
-            String stock = String.valueOf(product.getStockQuantity());
-            // Format the text nicely for the dropdown
-            displayList.add(product.getName() + " (" + price + ") - Stock: " + stock);
-        }
+        currentSearchResults = dbHelper.getProductsByNameOrBarcode(trimmedQuery);
+        searchAdapter.clear();
 
-        // 💥 KEY CHANGE: Use setAdapter directly without setTitle or buttons
-        new MaterialAlertDialogBuilder(requireContext())
-                // .setTitle("Select Product to Add") <-- REMOVE THIS LINE
-                .setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, displayList),
-                        (dialog, which) -> {
-                            Product selectedProduct = searchResults.get(which);
-                            manualAddToCart(selectedProduct);
-                            manualSearchView.setQuery("", false);
-                            dialog.dismiss();
-                        })
-                // .setNegativeButton("Cancel", null) <-- REMOVE THIS LINE
-                // We use create() and show() to ensure the dialog is generated correctly
-                .create()
-                .show();
+        if (currentSearchResults.isEmpty()) {
+            searchAdapter.add("No products found matching \"" + trimmedQuery + "\"");
+            searchResultsList.setVisibility(View.VISIBLE);
+        } else {
+            for (Product product : currentSearchResults) {
+                // Ensure to use the correct price method (assuming getPrice() returns selling price)
+                String price = String.format("₱%.2f", product.getPrice());
+                String stock = String.valueOf(product.getStockQuantity());
+
+                // Format the text for the list view
+                searchAdapter.add(product.getName() + " (" + price + ") - Stock: " + stock);
+            }
+            searchResultsList.setVisibility(View.VISIBLE);
+        }
+        searchAdapter.notifyDataSetChanged();
     }
+    // --- END NEW SEARCH DISPLAY METHOD ---
+
 
     /**
      * Logic for manually adding a product (mirrors barcode scanning logic).
@@ -209,11 +256,44 @@ public class Cart extends Fragment {
 
         // 2. Check if already in cart
         if (cartBarcodes.contains(rawValue)) {
-            Toast.makeText(getContext(), "This product is already in the cart.", Toast.LENGTH_SHORT).show();
-            return;
+            // Check if stock is reached for this product in the cart
+            CartItem existingItem = null;
+            for (CartItem item : cartItems) {
+                if (item.getProduct().getBarcode().equals(rawValue)) {
+                    existingItem = item;
+                    break;
+                }
+            }
+
+            if (existingItem != null && existingItem.getQuantity() >= foundProduct.getStockQuantity()) {
+                Toast.makeText(getContext(),
+                        "Stock limit reached for " + foundProduct.getName(),
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // If already in cart, increment quantity instead of returning
+            if (existingItem != null) {
+                if (beepSound != null) beepSound.start();
+
+                existingItem.setQuantity(existingItem.getQuantity() + 1);
+                cartStorage.saveCart(cartItems);
+
+                // Manually update the view without refreshing the whole list
+                View itemView = findItemView(existingItem);
+                if (itemView != null) {
+                    TextView tvQuantity = itemView.findViewById(R.id.tv_quantity);
+                    tvQuantity.setText(String.valueOf(existingItem.getQuantity()));
+                }
+
+                Toast.makeText(getContext(),
+                        "Quantity +1 for: " + foundProduct.getName(),
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
-        // 3. Add to cart
+        // 3. Add to cart as a new item (or if it wasn't found in the loop)
         if (beepSound != null) beepSound.start();
 
         CartItem newCartItem = new CartItem(foundProduct, 1);
@@ -228,6 +308,17 @@ public class Cart extends Fragment {
                 Toast.LENGTH_SHORT).show();
     }
     // --- END MANUAL SEARCH DIALOG METHOD ---
+
+    private View findItemView(CartItem item) {
+        for (int i = 0; i < cartItemsContainer.getChildCount(); i++) {
+            View itemView = cartItemsContainer.getChildAt(i);
+            Object tag = itemView.getTag();
+            if (tag != null && tag instanceof String && tag.equals(item.getProduct().getBarcode())) {
+                return itemView;
+            }
+        }
+        return null;
+    }
 
 
     private void checkCameraPermissionAndStart() {
@@ -364,15 +455,48 @@ public class Cart extends Fragment {
 
                     if (foundProduct != null) {
 
+                        // 1. Check for zero stock
                         if (foundProduct.getStockQuantity() <= 0) {
                             Toast.makeText(getContext(),
                                     "Product Out of Order (Zero Stock): " + foundProduct.getName(),
                                     Toast.LENGTH_LONG).show();
+                            // Do not add to cart, proceed to cooldown
                         }
 
+                        // 2. Check if already in cart
                         else if (cartBarcodes.contains(rawValue)) {
-                            Toast.makeText(getContext(), "This product is already in the cart.", Toast.LENGTH_SHORT).show();
-                        } else {
+                            CartItem existingItem = null;
+                            for (CartItem item : cartItems) {
+                                if (item.getProduct().getBarcode().equals(rawValue)) {
+                                    existingItem = item;
+                                    break;
+                                }
+                            }
+
+                            // Check stock limit before incrementing
+                            if (existingItem != null && existingItem.getQuantity() < foundProduct.getStockQuantity()) {
+                                if (beepSound != null) beepSound.start();
+
+                                existingItem.setQuantity(existingItem.getQuantity() + 1);
+                                cartStorage.saveCart(cartItems);
+
+                                // Manually update the view
+                                View itemView = findItemView(existingItem);
+                                if (itemView != null) {
+                                    TextView tvQuantity = itemView.findViewById(R.id.tv_quantity);
+                                    tvQuantity.setText(String.valueOf(existingItem.getQuantity()));
+                                }
+
+                                Toast.makeText(getContext(),
+                                        "Quantity +1 for: " + foundProduct.getName(),
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Stock limit reached or product not found in cart list.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        // 3. Add as a new item
+                        else {
                             if (beepSound != null) beepSound.start();
 
                             CartItem newCartItem = new CartItem(foundProduct, 1);
@@ -420,6 +544,9 @@ public class Cart extends Fragment {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View itemView = inflater.inflate(R.layout.item_cart_product, cartItemsContainer, false);
 
+        // Use the barcode as a tag for easy lookup during quantity update
+        itemView.setTag(product.getBarcode());
+
         TextView tvName = itemView.findViewById(R.id.tv_item_name);
         TextView tvPrice = itemView.findViewById(R.id.tv_item_price);
         TextView tvQuantity = itemView.findViewById(R.id.tv_quantity);
@@ -454,6 +581,7 @@ public class Cart extends Fragment {
                 cartItem.setQuantity(qty);
                 cartStorage.saveCart(cartItems);
             } else {
+                // If quantity is 1 and minus is pressed, remove item
                 removeItemFromCart(cartItem, itemView);
             }
         });

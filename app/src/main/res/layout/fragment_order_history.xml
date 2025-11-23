@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
-    android:background="#F7F8FA">
+    android:background="#F7F8FA"
+    tools:context=".OrderHistory">
 
+    <!-- TOOLBAR WITH BACK BUTTON -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,14 +23,244 @@
             app:navigationIcon="@drawable/ic_back_btn"
             app:navigationIconTint="@color/primaryColor"
             app:title="Order History"
-            app:titleTextColor="@color/primaryColor" />
-
+            app:titleTextColor="@color/primaryColor"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_order_history"
+    <!-- CONTENT -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="8dp"/>
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <!-- TOTAL ORDERS -->
+        <TextView
+            android:id="@+id/tv_order_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8 Orders"
+            android:textSize="14sp"
+            android:textColor="@color/secondaryColor"
+            android:fontFamily="@font/notosansregular"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- SEARCH BAR -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardElevation="2dp">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_orders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:queryHint="Search by date, product, or order ID..."
+                app:iconifiedByDefault="false"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- FILTERS -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <!-- CATEGORY FILTER -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/dropdown_order_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="All Categories"
+                    android:textSize="14sp"
+                    android:inputType="none"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- SORT FILTER -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/dropdown_sort"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sort by Recent"
+                    android:textSize="14sp"
+                    android:inputType="none"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!-- SCROLL LIST OF ORDERS -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- ========================= -->
+                <!-- ORDER CARD 1 (SINGLE PRODUCT) -->
+                <!-- ========================= -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Order ID -->
+                        <TextView
+                            android:text="Order #2501"
+                            android:textSize="18sp"
+                            android:textColor="@color/primaryColor"
+                            android:fontFamily="@font/notosanssemibold"/>
+
+                        <!-- Date + Time -->
+                        <TextView
+                            android:text="February 12, 2025 • 10:15 AM"
+                            android:textSize="13sp"
+                            android:textColor="@color/secondaryColor"
+                            android:layout_marginBottom="8dp"/>
+
+                        <!-- Single Product -->
+                        <TextView
+                            android:text="Product: Coffee Beans"
+                            android:textSize="15sp"
+                            android:fontFamily="@font/notosanssemibold"/>
+
+                        <TextView
+                            android:text="Quantity: 2"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="6dp"/>
+
+                        <!-- Price -->
+                        <TextView
+                            android:text="Total: ₱240.00"
+                            android:textSize="15sp"
+                            android:textColor="@color/primaryColor"
+                            android:fontFamily="@font/notosanssemibold"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ========================= -->
+                <!-- ORDER CARD 2 -->
+                <!-- ========================= -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:text="Order #2500"
+                            android:textSize="18sp"
+                            android:textColor="@color/primaryColor"
+                            android:fontFamily="@font/notosanssemibold"/>
+
+                        <TextView
+                            android:text="February 12, 2025 • 9:42 AM"
+                            android:textSize="13sp"
+                            android:textColor="@color/secondaryColor"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:text="Product: Milk 1L"
+                            android:textSize="15sp"
+                            android:fontFamily="@font/notosanssemibold"/>
+
+                        <TextView
+                            android:text="Quantity: 1"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="6dp"/>
+
+                        <TextView
+                            android:text="Total: ₱80.00"
+                            android:textSize="15sp"
+                            android:textColor="@color/primaryColor"
+                            android:fontFamily="@font/notosanssemibold"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ========================= -->
+                <!-- ORDER CARD 3 -->
+                <!-- ========================= -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:text="Order #2499"
+                            android:textSize="18sp"
+                            android:textColor="@color/primaryColor"
+                            android:fontFamily="@font/notosanssemibold"/>
+
+                        <TextView
+                            android:text="February 11, 2025 • 5:21 PM"
+                            android:textSize="13sp"
+                            android:textColor="@color/secondaryColor"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:text="Product: Sugar Pack"
+                            android:textSize="15sp"
+                            android:fontFamily="@font/notosanssemibold"/>
+
+                        <TextView
+                            android:text="Quantity: 3"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="6dp"/>
+
+                        <TextView
+                            android:text="Total: ₱90.00"
+                            android:textSize="15sp"
+                            android:textColor="@color/primaryColor"
+                            android:fontFamily="@font/notosanssemibold"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </LinearLayout>

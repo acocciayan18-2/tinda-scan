@@ -345,7 +345,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String timestamp = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TRX_TIMESTAMP));
                 double total = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_TRX_TOTAL_AMOUNT));
 
-                // transactionList.add(new Transaction(id, timestamp, total)); // Placeholder
+                transactionList.add(new Transaction(id, timestamp, total)); // Placeholder
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -376,7 +376,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 int qty = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_DETAIL_QUANTITY_SOLD));
                 double price = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_DETAIL_PRICE_AT_SALE));
 
-                // detailList.add(new TransactionDetail(name, qty, price)); // Placeholder
+                detailList.add(new TransactionDetail(name, qty, price)); // Placeholder
             } while (cursor.moveToNext());
         }
         cursor.close();

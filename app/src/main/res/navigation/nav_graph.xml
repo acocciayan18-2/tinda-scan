@@ -15,7 +15,20 @@
         android:id="@+id/nav_scan"
         android:name="com.example.tindascan.Scan"
         android:label="Scan"
-        tools:layout="@layout/scan" />
+        tools:layout="@layout/scan">
+
+        <action
+            android:id="@+id/action_scan_to_price_check"
+            app:destination="@id/nav_price_check" />
+
+        <action
+            android:id="@+id/action_scan_to_cart"
+            app:destination="@id/nav_cart" />
+
+        <action
+            android:id="@+id/action_scan_to_inventory_management"
+            app:destination="@id/nav_inventory_management" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_cart"
@@ -69,10 +82,21 @@
         android:label="Add Product"
         tools:layout="@layout/fragment_add_product" />
 
-    <!-- ✅ New Checkout Page Fragment -->
     <fragment
         android:id="@+id/nav_checkout"
         android:name="com.example.tindascan.CheckoutFragment"
         android:label="Checkout"
         tools:layout="@layout/fragment_checkout" />
+
+    <fragment
+        android:id="@+id/nav_price_check"
+        android:name="com.example.tindascan.PriceCheckFragment"
+        android:label="Price Check"
+        tools:layout="@layout/fragment_price_check" />
+
+    <fragment
+        android:id="@+id/nav_inventory_management"
+        android:name="com.example.tindascan.InventoryManagement"
+        android:label="Inventory Management"
+        tools:layout="@layout/fragment_inventory" />
 </navigation>
