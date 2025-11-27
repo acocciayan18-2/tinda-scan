@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="primaryColor">#333</color>
+    <color name="secondaryColor">#666</color>
+
+
+    <color name="bgColorPrimaryVariant">#B6C2CC</color>
+    <color name="bgColorSecondaryVariant">#C3B8CA</color>
+    <color name="bgColorBackground">#F7F8FA</color>
+    <color name="bgColorSurface">#F2F2F2</color>
+
+
+    <color name="bgColorSurfaceVariant">#DED8CD</color>
+    <color name="bgColorLightBlue">#CED9E0</color>
+    <color name="bgColorLightPink">#D9CFDD</color>
+    <color name="bgColorMintGreen">#CEDDDA</color>
+    <color name="bgColorPeachPink">#E6D3D5</color>
+
+
+    <color name="bgColorError">#B00020</color>
+    <color name="grey">#757575</color>
+    <color name="light_grey">#AEAEAE</color>
+    <color name="red_error">#D32F2F</color>
+
+
+</resources>
