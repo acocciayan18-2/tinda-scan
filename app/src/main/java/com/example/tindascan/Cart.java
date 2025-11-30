@@ -505,10 +505,10 @@ public class Cart extends Fragment {
                             cartBarcodes.add(rawValue);
                             updateClearButtonVisibility();
                             buildCartItemView(newCartItem);
-
-                            Toast.makeText(getContext(),
-                                    "Added: " + foundProduct.getName(),
-                                    Toast.LENGTH_SHORT).show();
+//
+//                            Toast.makeText(getContext(),
+//                                    "Added: " + foundProduct.getName(),
+//                                    Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(getContext(), "Product not found in stock", Toast.LENGTH_SHORT).show();

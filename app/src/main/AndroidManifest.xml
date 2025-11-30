@@ -15,15 +15,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TindaScan"
         tools:targetApi="31">
+
+        <!-- 1. PinLoginActivity: THIS IS NOW THE STARTING POINT -->
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".PinLoginActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 2. MainActivity: Standard activity, not exported -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- 3. RegisterActivity -->
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".Scan"
@@ -49,6 +70,7 @@
             tools:ignore="Instantiatable">
 
         </activity>
+
 
 
 

@@ -11,6 +11,9 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.activity.EdgeToEdge;
 
+// 🔥 IMPORT FIREBASE
+import com.google.firebase.FirebaseApp;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -21,6 +24,13 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
 
         super.onCreate(savedInstanceState);
+
+        // 🔥 INITIALIZE FIREBASE MANUALLY HERE
+        // This prevents the "Default FirebaseApp is not initialized" crash
+        if (FirebaseApp.getApps(this).isEmpty()) {
+            FirebaseApp.initializeApp(this);
+        }
+
         setContentView(R.layout.activity_main);
 
         BottomNavigationView navView = findViewById(R.id.bottom_navigation);
@@ -41,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                         id == R.id.nav_checkout ||
                         id == R.id.nav_details ||
                         id == R.id.nav_history ||
-                        id == R.id.nav_edit_product) { // 🔥 Added this line
+                        id == R.id.nav_edit_product) {
 
                     navView.setVisibility(View.GONE);
                 } else {

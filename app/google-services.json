@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "206577479630",
+    "project_id": "tinda-scan",
+    "storage_bucket": "tinda-scan.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206577479630:android:17ebc5c14b8d8db2bdc59f",
+        "android_client_info": {
+          "package_name": "com.example.tindascan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCQareRiF-uyyOVDeoNrp28qbOtCzMtTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
