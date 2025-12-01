@@ -48,6 +48,12 @@
         tools:layout="@layout/stock" />
 
     <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.tindascan.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
         android:id="@+id/nav_more"
         android:name="com.example.tindascan.More"
         android:label="More"
@@ -58,6 +64,13 @@
             app:destination="@id/nav_history" />
 
     </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_notifications"
+        android:name="com.example.tindascan.NotificationsFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notifications" />
 
     <fragment
         android:id="@+id/nav_history"

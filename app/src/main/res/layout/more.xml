@@ -8,11 +8,13 @@
     android:background="#F7F8FA"
     android:scrollbars="none"
     android:fitsSystemWindows="true"
+    android:fillViewport="true"
     tools:context=".More">
 
+    <!-- Changed height to match_parent so it stretches to fill screen -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -213,7 +215,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_toEndOf="@id/icon_bg_export"
-                    android:layout_toStartOf="@id/arrow_export"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp">
@@ -235,14 +236,6 @@
                         android:fontFamily="@font/notosansregular" />
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/arrow_export"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_chevron_right"
-                    app:tint="#AEAEAE"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
 
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -281,7 +274,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_toEndOf="@id/icon_bg_import"
-                    android:layout_toStartOf="@id/arrow_import"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp">
@@ -303,86 +295,11 @@
                         android:fontFamily="@font/notosansregular" />
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/arrow_import"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_chevron_right"
-                    app:tint="#AEAEAE"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
 
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 🔥 REPLACED RESET PIN WITH LOGOUT -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_logout"
-            style="@style/CardStyle.WhiteClickable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/icon_bg_logout"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="0dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    app:cardBackgroundColor="@color/bgColorLightBlue">
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_logout"
-                        app:tint="@android:color/black"
-                        android:layout_gravity="center"/>
-                </com.google.android.material.card.MaterialCardView>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_toEndOf="@id/icon_bg_logout"
-                    android:layout_toStartOf="@id/arrow_logout"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Log Out"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:fontFamily="@font/notosanssemibold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sign out of account"
-                        android:textColor="#666666"
-                        android:textSize="13sp"
-                        android:fontFamily="@font/notosansregular" />
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/arrow_logout"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_chevron_right"
-                    app:tint="#AEAEAE"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
-
-            </RelativeLayout>
-        </com.google.android.material.card.MaterialCardView>
-
+        <!-- Lock App Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_lock_app"
             style="@style/CardStyle.WhiteClickable"
@@ -417,7 +334,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_toEndOf="@id/icon_bg_lock"
-                    android:layout_toStartOf="@id/arrow_lock"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp">
@@ -439,14 +355,65 @@
                         android:fontFamily="@font/notosansregular" />
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/arrow_lock"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_chevron_right"
-                    app:tint="#AEAEAE"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Log Out Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_logout"
+            style="@style/CardStyle.WhiteClickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/icon_bg_logout"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    app:cardBackgroundColor="@color/bgColorLightBlue">
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ic_logout"
+                        app:tint="@android:color/black"
+                        android:layout_gravity="center"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toEndOf="@id/icon_bg_logout"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Log Out"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/notosanssemibold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sign out of account"
+                        android:textColor="#666666"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/notosansregular" />
+                </LinearLayout>
+
 
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>

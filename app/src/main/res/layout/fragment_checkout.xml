@@ -3,46 +3,78 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:background="#F7F8FA"
     android:fitsSystemWindows="true">
 
-    <ImageButton
-        android:id="@+id/btn_back_to_cart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_back_btn"
-        android:contentDescription="Back"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:tint="@color/black" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Checkout"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_marginVertical="12dp" />
-
-    <ScrollView
+    <!-- HEADER: Matching the Order History Style -->
+    <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="56dp"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="16dp"
+        app:contentInsetStart="0dp">
 
-        <LinearLayout
-            android:id="@+id/checkout_items_container"
+        <ImageButton
+            android:id="@+id/btn_back_to_cart"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back"
+            android:src="@drawable/ic_back_btn"
+            app:tint="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/notosansbold"
+            android:text="Checkout"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <!-- CONTENT BODY -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Scrollable Item List -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/checkout_items_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <!-- Confirm Button (Anchored at bottom) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_confirm_checkout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+            android:layout_marginTop="16dp"
+            android:text="Confirm Checkout"
+            android:textAllCaps="false"
+            android:fontFamily="@font/notosanssemibold"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/primaryColor"
+            app:cornerRadius="12dp"
+            android:paddingVertical="12dp"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_confirm_checkout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Confirm Checkout"
-        android:textAllCaps="false"
-        android:layout_marginTop="12dp" />
+    </LinearLayout>
 
 </LinearLayout>

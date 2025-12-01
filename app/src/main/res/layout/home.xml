@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F7F8FA"
+    android:fillViewport="true"
     android:fitsSystemWindows="true"
     tools:context=".Home">
 
@@ -20,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -40,45 +42,60 @@
                     android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:text="Wednesday, Oct 22"
                     android:textSize="14sp"
                     android:fontFamily="@font/notosansregular" />
             </LinearLayout>
 
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_refresh"-->
-<!--                android:layout_width="24dp"-->
-<!--                android:layout_height="24dp"-->
-<!--                android:src="@drawable/ic_refresh"-->
-<!--                android:layout_alignParentEnd="true"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:layout_marginStart="16dp" />-->
+            <!-- Refresh Icon -->
+            <ImageView
+                android:id="@+id/iv_refresh"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_refresh"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="4dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                app:tint="@android:color/black"/>
 
-<!--            <FrameLayout-->
-<!--                android:id="@+id/fl_notification"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_toStartOf="@id/iv_refresh"-->
-<!--                android:layout_centerVertical="true">-->
+            <!-- Notification Bell Container (Restored for Badge support) -->
+            <FrameLayout
+                android:id="@+id/fl_notification"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_toStartOf="@id/iv_refresh"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless">
 
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_notification_bell"-->
-<!--                    android:layout_width="25dp"-->
-<!--                    android:layout_height="25dp"-->
-<!--                    android:src="@drawable/ic_notification_bell" />-->
+                <ImageView
+                    android:id="@+id/iv_notification_bell"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_notification_bell"
+                    app:tint="@android:color/black"/>
 
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_notification_badge"-->
-<!--                    android:layout_width="16dp"-->
-<!--                    android:layout_height="16dp"-->
-<!--                    android:layout_gravity="top|end"-->
-<!--                    android:text="1"-->
-<!--                    android:background="@drawable/notification_badge_background"-->
-<!--                    android:textColor="@color/white"-->
-<!--                    android:textSize="10sp"-->
-<!--                    android:gravity="center"-->
-<!--                    android:fontFamily="@font/notosansmedium" />-->
-<!--            </FrameLayout>-->
+                <!-- Badge Count -->
+                <TextView
+                    android:id="@+id/tv_notification_badge"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:text="1"
+                    android:background="@drawable/notification_badge_background"
+                    android:textColor="@color/white"
+                    android:textSize="9sp"
+                    android:gravity="center"
+                    android:fontFamily="@font/notosansmedium"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
         </RelativeLayout>
 
         <!-- Stats Grid -->
@@ -89,7 +106,7 @@
             android:rowCount="2"
             android:layout_marginBottom="16dp">
 
-            <!-- Card 1: Today's Profit -->
+            <!-- Card 1: Profit -->
             <com.google.android.material.card.MaterialCardView
                 style="@style/BaseCardStyle"
                 android:layout_width="0dp"
@@ -97,7 +114,6 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 app:cardBackgroundColor="@color/bgColorSurfaceVariant">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -109,15 +125,12 @@
                         android:src="@drawable/ic_peso_sign"
                         app:tint="@color/primaryColor"
                         android:layout_marginBottom="8dp"/>
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Today's Profit"
                         android:textColor="@color/secondaryColor"
                         android:fontFamily="@font/notosansmedium" />
-
-                    <!-- ID changed to tv_profit_value for clarity -->
                     <TextView
                         android:id="@+id/tv_profit_value"
                         android:layout_width="wrap_content"
@@ -129,7 +142,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card 2: Today's Sales (Previously Orders) -->
+            <!-- Card 2: Sales -->
             <com.google.android.material.card.MaterialCardView
                 style="@style/BaseCardStyle"
                 android:layout_width="0dp"
@@ -148,16 +161,12 @@
                         android:src="@drawable/ic_shopping_cart"
                         app:tint="@color/primaryColor"
                         android:layout_marginBottom="8dp"/>
-
-                    <!-- Label changed from Orders to Today's Sales -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Today's Sales"
                         android:textColor="@color/secondaryColor"
                         android:fontFamily="@font/notosansmedium" />
-
-                    <!-- ID changed to tv_sales_value -->
                     <TextView
                         android:id="@+id/tv_sales_value"
                         android:layout_width="wrap_content"
@@ -169,8 +178,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-
-            <!-- Card 3: Products Count -->
+            <!-- Card 3: Products -->
             <com.google.android.material.card.MaterialCardView
                 style="@style/BaseCardStyle"
                 android:layout_width="0dp"
@@ -189,14 +197,12 @@
                         android:src="@drawable/ic_product_box"
                         app:tint="@color/primaryColor"
                         android:layout_marginBottom="8dp"/>
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Products"
                         android:textColor="@color/secondaryColor"
                         android:fontFamily="@font/notosansmedium" />
-
                     <TextView
                         android:id="@+id/tv_products_value"
                         android:layout_width="wrap_content"
@@ -227,14 +233,12 @@
                         android:src="@drawable/ic_low_stock_graph"
                         app:tint="@color/primaryColor"
                         android:layout_marginBottom="8dp"/>
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Low Stock"
                         android:textColor="@color/secondaryColor"
                         android:fontFamily="@font/notosansmedium" />
-
                     <TextView
                         android:id="@+id/tv_low_stock_value"
                         android:layout_width="wrap_content"
@@ -245,41 +249,59 @@
                         android:fontFamily="@font/notosansbold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
         </GridLayout>
 
-        <!-- Top Products Section (Placeholder for now) -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Recent Activity"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-            android:fontFamily="@font/notosanssemibold"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"/>
-
-        <com.google.android.material.card.MaterialCardView
+        <!-- Recent Activity Section -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            android:layout_margin="8dp"
-            app:cardBackgroundColor="@color/white">
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp">
 
             <TextView
-                android:id="@+id/tv_no_sales"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No sales yet today"
-                android:gravity="center"
-                android:padding="48dp"
-                android:textSize="16sp"
-                android:fontFamily="@font/notosansregular"
-                android:textColor="#666666"/>
+                android:text="Recent Activity"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/notosanssemibold"
+                android:layout_centerVertical="true"/>
 
-        </com.google.android.material.card.MaterialCardView>
+            <ImageButton
+                android:id="@+id/btn_clear_activities"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_trash_stroke"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="#666666"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:tooltipText="Clear Logs"/>
+        </RelativeLayout>
+
+        <!-- Activity List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recent_activities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            tools:listitem="@layout/item_recent_activity"
+            tools:itemCount="3"/>
+
+        <!-- Fallback Text -->
+        <TextView
+            android:id="@+id/tv_no_activities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No recent activities"
+            android:gravity="center"
+            android:padding="32dp"
+            android:textSize="14sp"
+            android:textColor="#999999"
+            android:fontFamily="@font/notosansregular"
+            android:visibility="gone"/>
 
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

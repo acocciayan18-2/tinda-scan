@@ -12,23 +12,24 @@
     app:strokeColor="#F0F0F0"
     app:cardBackgroundColor="@color/white">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:padding="12dp">
 
-        <!-- Icon Container -->
+        <!-- Icon Background (Color changes dynamically in Adapter) -->
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/icon_container"
+            android:id="@+id/card_icon_bg"
             android:layout_width="40dp"
             android:layout_height="40dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            app:cardBackgroundColor="#E8F5E9"> <!-- Light Green Tint -->
+            app:cardBackgroundColor="#E3F2FD">
 
             <ImageView
+                android:id="@+id/iv_activity_icon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_history"
@@ -36,48 +37,44 @@
                 android:layout_gravity="center"/>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Text Info -->
+        <!-- Text Details -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_toEndOf="@id/icon_container"
-            android:layout_toStartOf="@id/tv_transaction_total"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="8dp">
+            android:layout_marginStart="12dp">
 
             <TextView
-                android:id="@+id/tv_transaction_id"
+                android:id="@+id/tv_activity_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sale #12345"
+                android:text="Activity Title"
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
                 android:fontFamily="@font/notosanssemibold" />
 
             <TextView
-                android:id="@+id/tv_transaction_date"
+                android:id="@+id/tv_activity_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Oct 28, 2025 • 05:30 PM"
+                android:text="Activity Details"
                 android:textColor="#666666"
                 android:textSize="12sp"
-                android:fontFamily="@font/notosansregular"
-                android:layout_marginTop="2dp"/>
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:fontFamily="@font/notosansregular" />
         </LinearLayout>
 
-        <!-- Total Amount -->
+        <!-- Timestamp -->
         <TextView
-            android:id="@+id/tv_transaction_total"
+            android:id="@+id/tv_activity_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:text="₱1,250.00"
-            android:textColor="@color/primaryColor"
-            android:textSize="16sp"
-            android:fontFamily="@font/notosansbold" />
+            android:text="Just now"
+            android:textColor="#999999"
+            android:textSize="11sp"
+            android:fontFamily="@font/notosansregular" />
 
-    </RelativeLayout>
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

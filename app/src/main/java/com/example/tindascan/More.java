@@ -5,7 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +23,12 @@ import com.google.firebase.auth.FirebaseAuth;
 public class More extends Fragment {
 
     private FirebaseSyncManager syncManager;
+
+    // UI components for the Progress Dialog
+    private AlertDialog progressDialog;
+    private TextView tvProgressTitle, tvProgressMessage;
+    private ProgressBar progressBar;
+    private Button btnCancelSync;
 
     public More() {
         super(R.layout.more);
@@ -40,13 +50,20 @@ public class More extends Fragment {
         // 1. Orders History
         View btnHistory = view.findViewById(R.id.card_orders_history);
         btnHistory.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.action_nav_more_to_nav_history);
+            // Ensure 'nav_history' exists in your nav_graph.xml
+            try {
+                NavHostFragment.findNavController(this).navigate(R.id.action_nav_more_to_nav_history);
+            } catch (Exception e) {
+                // Fallback if action is missing, try direct navigation
+                NavHostFragment.findNavController(this).navigate(R.id.nav_history);
+            }
         });
 
-        // 2. Settings (Placeholder)
+        // 2. Settings (🔥 FIXED: Opens Settings Fragment)
         View btnSettings = view.findViewById(R.id.card_settings);
         btnSettings.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Settings coming soon", Toast.LENGTH_SHORT).show();
+            // Ensure 'nav_settings' exists in your nav_graph.xml
+            NavHostFragment.findNavController(this).navigate(R.id.nav_settings);
         });
 
         // 3. Export Data (Upload to Firebase)
@@ -57,16 +74,13 @@ public class More extends Fragment {
         View btnImport = view.findViewById(R.id.card_import);
         btnImport.setOnClickListener(v -> handleImport());
 
-        // 5. 🔥 NEW: Lock App Logic
+        // 5. Lock App Logic
         View btnLock = view.findViewById(R.id.card_lock_app);
         btnLock.setOnClickListener(v -> {
-            // A. Set "is_app_locked" to TRUE in preferences
             SharedPreferences prefs = requireContext().getSharedPreferences("TindaScanSecurity", Context.MODE_PRIVATE);
             prefs.edit().putBoolean("is_app_locked", true).apply();
 
-            // B. Redirect to PinLoginActivity immediately
             Intent intent = new Intent(requireContext(), PinLoginActivity.class);
-            // Clear the activity stack so pressing "Back" doesn't return to the app content
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
 
@@ -80,10 +94,7 @@ public class More extends Fragment {
                     .setTitle("Log Out")
                     .setMessage("Are you sure you want to log out?")
                     .setPositiveButton("Yes", (dialog, which) -> {
-                        // 1. Sign out from Firebase
                         FirebaseAuth.getInstance().signOut();
-
-                        // 2. Redirect to PinLoginActivity (which checks auth and will send to Register/Login)
                         Intent intent = new Intent(requireContext(), PinLoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
@@ -95,12 +106,44 @@ public class More extends Fragment {
 
     // --- Helper Methods for Sync ---
 
+    private void showProgressDialog(String title) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_sync_progress, null);
+
+        // Match IDs from your XML
+        tvProgressTitle = view.findViewById(R.id.tv_progress_title);
+        tvProgressMessage = view.findViewById(R.id.tv_progress_message);
+        progressBar = view.findViewById(R.id.progressBar);
+        btnCancelSync = view.findViewById(R.id.btn_cancel_sync);
+
+        tvProgressTitle.setText(title);
+        if (progressBar != null) progressBar.setProgress(0);
+
+        btnCancelSync.setOnClickListener(v -> {
+            if (tvProgressMessage != null) tvProgressMessage.setText("Cancelling... Rolling back changes...");
+            btnCancelSync.setEnabled(false);
+            syncManager.cancelProcess();
+        });
+
+        builder.setView(view);
+        builder.setCancelable(false);
+        progressDialog = builder.create();
+        progressDialog.show();
+    }
+
+    private void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
     private void handleExport() {
-        Toast.makeText(getContext(), "Backing up Products & Transactions...", Toast.LENGTH_SHORT).show();
+        showProgressDialog("Backing up Data");
 
         syncManager.exportAllData(new FirebaseSyncManager.SyncCallback() {
             @Override
             public void onSuccess(String message) {
+                dismissProgressDialog();
                 if (getContext() != null) {
                     Toast.makeText(getContext(), "✅ " + message, Toast.LENGTH_LONG).show();
                 }
@@ -108,9 +151,16 @@ public class More extends Fragment {
 
             @Override
             public void onFailure(String error) {
+                dismissProgressDialog();
                 if (getContext() != null) {
                     Toast.makeText(getContext(), "❌ " + error, Toast.LENGTH_LONG).show();
                 }
+            }
+
+            @Override
+            public void onProgress(String status, int percent) {
+                if (tvProgressMessage != null) tvProgressMessage.setText(status);
+                if (progressBar != null) progressBar.setProgress(percent);
             }
         });
     }
@@ -120,11 +170,13 @@ public class More extends Fragment {
                 .setTitle("Restore Full Backup")
                 .setMessage("This will download Products, Transaction History, and Sales details from the cloud.\n\nLocal data will be updated. Continue?")
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    Toast.makeText(getContext(), "Restoring data...", Toast.LENGTH_SHORT).show();
+
+                    showProgressDialog("Restoring Data");
 
                     syncManager.importAllData(new FirebaseSyncManager.SyncCallback() {
                         @Override
                         public void onSuccess(String message) {
+                            dismissProgressDialog();
                             if (getContext() != null) {
                                 Toast.makeText(getContext(), "✅ " + message, Toast.LENGTH_LONG).show();
                             }
@@ -132,9 +184,16 @@ public class More extends Fragment {
 
                         @Override
                         public void onFailure(String error) {
+                            dismissProgressDialog();
                             if (getContext() != null) {
                                 Toast.makeText(getContext(), "❌ " + error, Toast.LENGTH_LONG).show();
                             }
+                        }
+
+                        @Override
+                        public void onProgress(String status, int percent) {
+                            if (tvProgressMessage != null) tvProgressMessage.setText(status);
+                            if (progressBar != null) progressBar.setProgress(percent);
                         }
                     });
                 })

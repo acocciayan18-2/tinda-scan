@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView; // Added for in-line search results
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,11 +69,14 @@ public class Cart extends Fragment {
     private LinearLayout cartItemsContainer;
     private SearchView manualSearchView;
 
-    // --- NEW VARIABLES FOR IN-LINE SEARCH ---
+    // 🔥 NEW: Empty Cart TextView & Total Price TextView
+    private TextView tvEmptyCart;
+    private TextView tvTotalPrice;
+
+    // --- VARIABLES FOR IN-LINE SEARCH ---
     private ListView searchResultsList;
     private ArrayAdapter<String> searchAdapter;
     private List<Product> currentSearchResults = new ArrayList<>();
-    // --- END NEW VARIABLES ---
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -110,6 +113,11 @@ public class Cart extends Fragment {
 
         cartItemsContainer = view.findViewById(R.id.cart_items_container);
         previewView = view.findViewById(R.id.camera_preview);
+
+        // Initialize Views
+        tvEmptyCart = view.findViewById(R.id.tv_empty_cart);
+        tvTotalPrice = view.findViewById(R.id.tv_total_price); // 🔥 Bind Total Price View
+
         beepSound = MediaPlayer.create(requireContext(), R.raw.beep);
 
         // --- MANUAL SEARCH LIST INIT ---
@@ -118,13 +126,10 @@ public class Cart extends Fragment {
                 android.R.layout.simple_list_item_1,
                 new ArrayList<>());
         searchResultsList.setAdapter(searchAdapter);
-        searchResultsList.setVisibility(View.GONE); // Start hidden
+        searchResultsList.setVisibility(View.GONE);
 
-        // Handle clicks on the search results list
         searchResultsList.setOnItemClickListener((parent, view1, position, id) -> {
-            // Check if the item clicked is "No products found."
             if (currentSearchResults.isEmpty() || position >= currentSearchResults.size()) {
-                // Do nothing, or hide the list if "No products found" was clicked
                 manualSearchView.setQuery("", false);
                 manualSearchView.clearFocus();
                 searchResultsList.setVisibility(View.GONE);
@@ -134,28 +139,26 @@ public class Cart extends Fragment {
             Product selectedProduct = currentSearchResults.get(position);
             manualAddToCart(selectedProduct);
 
-            // Clear search view and hide the list after selection
             manualSearchView.setQuery("", false);
             manualSearchView.clearFocus();
             searchResultsList.setVisibility(View.GONE);
         });
-        // --- END MANUAL SEARCH LIST INIT ---
 
         cartStorage = new CartStorage(requireContext());
         cartItems = cartStorage.loadCart();
-        populateSavedCart();
 
         btnClearCart = view.findViewById(R.id.btn_clear_cart);
-        updateClearButtonVisibility();
+
+        populateSavedCart();
+        updateCartState();
+        calculateAndUpdateTotal(); // 🔥 Calculate total on startup
 
         btnClearCart.setOnClickListener(v -> {
             new MaterialAlertDialogBuilder(requireContext())
                     .setTitle("Clear Cart")
                     .setMessage("Are you sure you want to remove all items from the cart?")
                     .setIcon(R.drawable.ic_trash_stroke)
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        clearCart();
-                    })
+                    .setPositiveButton("Yes", (dialog, which) -> clearCart())
                     .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                     .show();
         });
@@ -165,18 +168,16 @@ public class Cart extends Fragment {
         manualSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // When submitted, perform final search and display
                 displaySearchResults(query);
-                manualSearchView.clearFocus(); // Hide keyboard
+                manualSearchView.clearFocus();
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.length() > 2) { // Start searching after 3 characters
+                if (newText.length() > 2) {
                     displaySearchResults(newText);
                 } else {
-                    // Hide list when query is too short or empty
                     searchResultsList.setVisibility(View.GONE);
                     currentSearchResults.clear();
                     searchAdapter.clear();
@@ -185,29 +186,48 @@ public class Cart extends Fragment {
             }
         });
 
-        // Ensure the list disappears when the search view loses focus AND the query is empty
         manualSearchView.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus && manualSearchView.getQuery().length() == 0) {
                 searchResultsList.setVisibility(View.GONE);
             }
         });
-        // --- END MANUAL SEARCH INIT ---
 
         checkCameraPermissionAndStart();
 
         MaterialButton btnProceed = view.findViewById(R.id.btn_proceed);
-
         btnProceed.setOnClickListener(v -> {
             if (cartItems.isEmpty()) {
                 Toast.makeText(requireContext(), "Your cart is empty.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.nav_checkout);
+            NavHostFragment.findNavController(this).navigate(R.id.nav_checkout);
         });
     }
 
-    // --- NEW SEARCH DISPLAY METHOD (Replaces Dialog) ---
+    // 🔥 Method to calculate total price
+    private void calculateAndUpdateTotal() {
+        double total = 0.0;
+        for (CartItem item : cartItems) {
+            total += item.getProduct().getSellingPrice() * item.getQuantity();
+        }
+        if (tvTotalPrice != null) {
+            tvTotalPrice.setText(String.format("₱%.2f", total));
+        }
+    }
+
+    // --- Helper to Update UI State ---
+    private void updateCartState() {
+        boolean isEmpty = cartItems.isEmpty();
+
+        if (btnClearCart != null) {
+            btnClearCart.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        }
+
+        if (tvEmptyCart != null) {
+            tvEmptyCart.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+        }
+    }
+
     private void displaySearchResults(String query) {
         String trimmedQuery = query.trim();
 
@@ -226,37 +246,24 @@ public class Cart extends Fragment {
             searchResultsList.setVisibility(View.VISIBLE);
         } else {
             for (Product product : currentSearchResults) {
-                // Ensure to use the correct price method (assuming getPrice() returns selling price)
                 String price = String.format("₱%.2f", product.getPrice());
                 String stock = String.valueOf(product.getStockQuantity());
-
-                // Format the text for the list view
                 searchAdapter.add(product.getName() + " (" + price + ") - Stock: " + stock);
             }
             searchResultsList.setVisibility(View.VISIBLE);
         }
         searchAdapter.notifyDataSetChanged();
     }
-    // --- END NEW SEARCH DISPLAY METHOD ---
 
-
-    /**
-     * Logic for manually adding a product (mirrors barcode scanning logic).
-     */
     private void manualAddToCart(Product foundProduct) {
         String rawValue = foundProduct.getBarcode();
 
-        // 1. Check for zero stock (Out of Order)
         if (foundProduct.getStockQuantity() <= 0) {
-            Toast.makeText(getContext(),
-                    "Product Out of Order (Zero Stock): " + foundProduct.getName(),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Product Out of Order (Zero Stock): " + foundProduct.getName(), Toast.LENGTH_LONG).show();
             return;
         }
 
-        // 2. Check if already in cart
         if (cartBarcodes.contains(rawValue)) {
-            // Check if stock is reached for this product in the cart
             CartItem existingItem = null;
             for (CartItem item : cartItems) {
                 if (item.getProduct().getBarcode().equals(rawValue)) {
@@ -266,48 +273,41 @@ public class Cart extends Fragment {
             }
 
             if (existingItem != null && existingItem.getQuantity() >= foundProduct.getStockQuantity()) {
-                Toast.makeText(getContext(),
-                        "Stock limit reached for " + foundProduct.getName(),
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Stock limit reached for " + foundProduct.getName(), Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // If already in cart, increment quantity instead of returning
             if (existingItem != null) {
                 if (beepSound != null) beepSound.start();
 
                 existingItem.setQuantity(existingItem.getQuantity() + 1);
                 cartStorage.saveCart(cartItems);
 
-                // Manually update the view without refreshing the whole list
                 View itemView = findItemView(existingItem);
                 if (itemView != null) {
                     TextView tvQuantity = itemView.findViewById(R.id.tv_quantity);
                     tvQuantity.setText(String.valueOf(existingItem.getQuantity()));
                 }
 
-                Toast.makeText(getContext(),
-                        "Quantity +1 for: " + foundProduct.getName(),
-                        Toast.LENGTH_SHORT).show();
+                calculateAndUpdateTotal(); // 🔥 Update Total
+                Toast.makeText(getContext(), "Quantity +1 for: " + foundProduct.getName(), Toast.LENGTH_SHORT).show();
                 return;
             }
         }
 
-        // 3. Add to cart as a new item (or if it wasn't found in the loop)
         if (beepSound != null) beepSound.start();
 
         CartItem newCartItem = new CartItem(foundProduct, 1);
         cartItems.add(newCartItem);
         cartStorage.saveCart(cartItems);
         cartBarcodes.add(rawValue);
-        updateClearButtonVisibility();
-        buildCartItemView(newCartItem);
 
-        Toast.makeText(getContext(),
-                "Added: " + foundProduct.getName() + " manually.",
-                Toast.LENGTH_SHORT).show();
+        updateCartState();
+        buildCartItemView(newCartItem);
+        calculateAndUpdateTotal(); // 🔥 Update Total
+
+        Toast.makeText(getContext(), "Added: " + foundProduct.getName() + " manually.", Toast.LENGTH_SHORT).show();
     }
-    // --- END MANUAL SEARCH DIALOG METHOD ---
 
     private View findItemView(CartItem item) {
         for (int i = 0; i < cartItemsContainer.getChildCount(); i++) {
@@ -320,10 +320,8 @@ public class Cart extends Fragment {
         return null;
     }
 
-
     private void checkCameraPermissionAndStart() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             startCamera();
         } else {
             requestPermissionLauncher.launch(Manifest.permission.CAMERA);
@@ -347,18 +345,10 @@ public class Cart extends Fragment {
         cartStorage.clearCart();
         cartBarcodes.clear();
         cartItemsContainer.removeAllViews();
-        updateClearButtonVisibility();
-        Toast.makeText(requireContext(), "Cart cleared", Toast.LENGTH_SHORT).show();
-    }
 
-    private void updateClearButtonVisibility() {
-        if (btnClearCart != null) {
-            if (cartItems.isEmpty()) {
-                btnClearCart.setVisibility(View.GONE);
-            } else {
-                btnClearCart.setVisibility(View.VISIBLE);
-            }
-        }
+        updateCartState();
+        calculateAndUpdateTotal(); // 🔥 Reset Total to 0
+        Toast.makeText(requireContext(), "Cart cleared", Toast.LENGTH_SHORT).show();
     }
 
     private void populateSavedCart() {
@@ -370,11 +360,9 @@ public class Cart extends Fragment {
         for (CartItem cartItem : cartItems) {
             Product product = cartItem.getProduct();
             if (product == null) {
-                Log.e(TAG, "Found a CartItem with a null Product, scheduling for removal.");
                 itemsToRemove.add(cartItem);
                 continue;
             }
-
             buildCartItemView(cartItem);
             cartBarcodes.add(product.getBarcode());
         }
@@ -387,16 +375,10 @@ public class Cart extends Fragment {
 
     private void bindPreviewAndAnalysis(@NonNull ProcessCameraProvider cameraProvider) {
         Preview preview = new Preview.Builder().build();
-        CameraSelector cameraSelector = new CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                .build();
-
+        CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
-        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build();
-
+        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder().setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build();
         imageAnalysis.setAnalyzer(cameraExecutor, new BarcodeAnalyzer());
         cameraProvider.unbindAll();
 
@@ -420,21 +402,18 @@ public class Cart extends Fragment {
                 imageProxy.close();
                 return;
             }
-
             android.media.Image mediaImage = imageProxy.getImage();
             if (mediaImage != null) {
                 InputImage image = InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
-                barcodeScanner.process(image)
-                        .addOnSuccessListener(barcodes -> {
-                            processBarcodeResults(barcodes);
-                            imageProxy.close();
-                            isProcessing.set(false);
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.e(TAG, "Barcode scanning failed", e);
-                            imageProxy.close();
-                            isProcessing.set(false);
-                        });
+                barcodeScanner.process(image).addOnSuccessListener(barcodes -> {
+                    processBarcodeResults(barcodes);
+                    imageProxy.close();
+                    isProcessing.set(false);
+                }).addOnFailureListener(e -> {
+                    Log.e(TAG, "Barcode scanning failed", e);
+                    imageProxy.close();
+                    isProcessing.set(false);
+                });
             } else {
                 imageProxy.close();
                 isProcessing.set(false);
@@ -454,17 +433,9 @@ public class Cart extends Fragment {
                     Product foundProduct = dbHelper.getProductByBarcode(rawValue);
 
                     if (foundProduct != null) {
-
-                        // 1. Check for zero stock
                         if (foundProduct.getStockQuantity() <= 0) {
-                            Toast.makeText(getContext(),
-                                    "Product Out of Order (Zero Stock): " + foundProduct.getName(),
-                                    Toast.LENGTH_LONG).show();
-                            // Do not add to cart, proceed to cooldown
-                        }
-
-                        // 2. Check if already in cart
-                        else if (cartBarcodes.contains(rawValue)) {
+                            Toast.makeText(getContext(), "Product Out of Order (Zero Stock): " + foundProduct.getName(), Toast.LENGTH_LONG).show();
+                        } else if (cartBarcodes.contains(rawValue)) {
                             CartItem existingItem = null;
                             for (CartItem item : cartItems) {
                                 if (item.getProduct().getBarcode().equals(rawValue)) {
@@ -472,48 +443,34 @@ public class Cart extends Fragment {
                                     break;
                                 }
                             }
-
-                            // Check stock limit before incrementing
                             if (existingItem != null && existingItem.getQuantity() < foundProduct.getStockQuantity()) {
                                 if (beepSound != null) beepSound.start();
-
                                 existingItem.setQuantity(existingItem.getQuantity() + 1);
                                 cartStorage.saveCart(cartItems);
-
-                                // Manually update the view
                                 View itemView = findItemView(existingItem);
                                 if (itemView != null) {
                                     TextView tvQuantity = itemView.findViewById(R.id.tv_quantity);
                                     tvQuantity.setText(String.valueOf(existingItem.getQuantity()));
                                 }
-
-                                Toast.makeText(getContext(),
-                                        "Quantity +1 for: " + foundProduct.getName(),
-                                        Toast.LENGTH_SHORT).show();
+                                calculateAndUpdateTotal(); // 🔥 Update Total
+                                Toast.makeText(getContext(), "Quantity +1 for: " + foundProduct.getName(), Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(getContext(), "Stock limit reached or product not found in cart list.", Toast.LENGTH_SHORT).show();
                             }
-                        }
-
-                        // 3. Add as a new item
-                        else {
+                        } else {
                             if (beepSound != null) beepSound.start();
-
                             CartItem newCartItem = new CartItem(foundProduct, 1);
                             cartItems.add(newCartItem);
                             cartStorage.saveCart(cartItems);
                             cartBarcodes.add(rawValue);
-                            updateClearButtonVisibility();
+
+                            updateCartState();
                             buildCartItemView(newCartItem);
-//
-//                            Toast.makeText(getContext(),
-//                                    "Added: " + foundProduct.getName(),
-//                                    Toast.LENGTH_SHORT).show();
+                            calculateAndUpdateTotal(); // 🔥 Update Total
                         }
                     } else {
                         Toast.makeText(getContext(), "Product not found in stock", Toast.LENGTH_SHORT).show();
                     }
-
                     scanCooldownHandler.postDelayed(() -> scannedBarcodes.remove(rawValue), SCAN_COOLDOWN_MS);
                 });
             }
@@ -524,9 +481,10 @@ public class Cart extends Fragment {
         cartItems.remove(cartItem);
         cartBarcodes.remove(cartItem.getProduct().getBarcode());
         cartStorage.saveCart(cartItems);
-
         cartItemsContainer.removeView(itemView);
-        updateClearButtonVisibility();
+
+        updateCartState();
+        calculateAndUpdateTotal(); // 🔥 Update Total
 
         Toast.makeText(getContext(), "Removed: " + cartItem.getProduct().getName(), Toast.LENGTH_SHORT).show();
     }
@@ -535,7 +493,6 @@ public class Cart extends Fragment {
         Product product = cartItem.getProduct();
 
         if (product == null) {
-            Log.e(TAG, "A CartItem had a null Product. Removing it.");
             cartItems.remove(cartItem);
             cartStorage.saveCart(cartItems);
             return;
@@ -544,7 +501,6 @@ public class Cart extends Fragment {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View itemView = inflater.inflate(R.layout.item_cart_product, cartItemsContainer, false);
 
-        // Use the barcode as a tag for easy lookup during quantity update
         itemView.setTag(product.getBarcode());
 
         TextView tvName = itemView.findViewById(R.id.tv_item_name);
@@ -555,20 +511,18 @@ public class Cart extends Fragment {
 
         tvName.setText(product.getName());
         tvPrice.setText("₱" + String.format("%.2f", product.getPrice()));
-
         tvQuantity.setText(String.valueOf(cartItem.getQuantity()));
 
         btnPlus.setOnClickListener(v -> {
             int qty = Integer.parseInt(tvQuantity.getText().toString());
-            // Check stock limit against the database product's current stock
             if (qty + 1 > product.getStockQuantity()) {
                 Toast.makeText(getContext(), "Stock limit reached for " + product.getName(), Toast.LENGTH_SHORT).show();
             } else {
                 qty++;
                 tvQuantity.setText(String.valueOf(qty));
-
                 cartItem.setQuantity(qty);
                 cartStorage.saveCart(cartItems);
+                calculateAndUpdateTotal(); // 🔥 Update Total
             }
         });
 
@@ -577,11 +531,10 @@ public class Cart extends Fragment {
             if (qty > 1) {
                 qty--;
                 tvQuantity.setText(String.valueOf(qty));
-
                 cartItem.setQuantity(qty);
                 cartStorage.saveCart(cartItems);
+                calculateAndUpdateTotal(); // 🔥 Update Total
             } else {
-                // If quantity is 1 and minus is pressed, remove item
                 removeItemFromCart(cartItem, itemView);
             }
         });

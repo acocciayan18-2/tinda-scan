@@ -1,267 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F7F7"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:background="#F7F8FA"
+    android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <!-- Header -->
+    <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!-- TITLE -->
+        android:background="@color/white"
+        android:elevation="4dp">
+        <ImageButton
+            android:id="@+id/btn_back_settings"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_back_btn"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/black"/>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Settings"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="#111111"
-            android:gravity="center"
-            android:paddingBottom="24dp"/>
+            android:textSize="20sp"
+            android:fontFamily="@font/notosansbold"
+            android:textColor="@color/black"
+            android:layout_gravity="center"/>
+    </com.google.android.material.appbar.MaterialToolbar>
 
-        <!-- Account Section -->
-        <com.google.android.material.card.MaterialCardView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="3dp"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="#FFFFFF">
+            android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notifications"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/notosansbold"
+                android:layout_marginBottom="8dp"/>
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <!-- Dark Gray Accent -->
-                <View
-                    android:layout_width="6dp"
-                    android:layout_height="match_parent"
-                    android:background="#333333" />
-
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/white">
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <TextView
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_inventory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Account"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#111111"
-                        android:paddingBottom="8dp"/>
+                        android:text="Low Stock Alerts"
+                        android:textSize="16sp"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="User Name: John Doe"
-                        android:textColor="#444444"
-                        android:textSize="15sp"
-                        android:paddingBottom="4dp"/>
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginVertical="8dp"/>
 
-                    <TextView
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_expiry"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Role: Cashier"
-                        android:textColor="#444444"
-                        android:textSize="15sp"/>
+                        android:text="Expiration Warnings"
+                        android:textSize="16sp"/>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginVertical="8dp"/>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_reports"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Daily Sales Reports"
+                        android:textSize="16sp"/>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginVertical="8dp"/>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_system"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Backup Reminders"
+                        android:textSize="16sp"/>
                 </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
 
-        <!-- Hardware Section -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="3dp"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="#FFFFFF">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <!-- Dark Gray Accent -->
-                <View
-                    android:layout_width="6dp"
-                    android:layout_height="match_parent"
-                    android:background="#555555" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Hardware"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#111111"
-                        android:paddingBottom="8dp"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Receipt Printer"
-                        android:textColor="#444444"
-                        android:textSize="15sp"
-                        android:paddingBottom="4dp"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Barcode Scanner"
-                        android:textColor="#444444"
-                        android:textSize="15sp"/>
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Preferences Section -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="3dp"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="#FFFFFF">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <View
-                    android:layout_width="6dp"
-                    android:layout_height="match_parent"
-                    android:background="#666666" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Preferences"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#111111"
-                        android:paddingBottom="8dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingBottom="4dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Dark Mode"
-                            android:textColor="#444444"
-                            android:textSize="15sp"/>
-
-                        <Switch
-                            android:id="@+id/switch_dark_mode"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Auto-Save Inventory"
-                            android:textColor="#444444"
-                            android:textSize="15sp"/>
-
-                        <Switch
-                            android:id="@+id/switch_auto_save"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- About Section -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="3dp"
-            android:layout_marginBottom="24dp"
-            android:backgroundTint="#FFFFFF">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <View
-                    android:layout_width="6dp"
-                    android:layout_height="match_parent"
-                    android:background="#777777" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="About"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#111111"
-                        android:paddingBottom="8dp"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="App Version: 1.0.0"
-                        android:textColor="#444444"
-                        android:textSize="15sp"
-                        android:paddingBottom="4dp"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Help and Support"
-                        android:textColor="#444444"
-                        android:textSize="15sp"/>
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
-</ScrollView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

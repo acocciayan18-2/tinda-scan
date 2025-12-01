@@ -10,11 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 
-/**
- * Fragment for Inventory Management.
- * This screen would typically contain a list/recycler view to display all products
- * and buttons to add/edit inventory.
- */
+
 public class InventoryManagement extends Fragment {
 
     public InventoryManagement() {

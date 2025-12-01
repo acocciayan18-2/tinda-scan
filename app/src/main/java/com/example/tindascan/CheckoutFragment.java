@@ -127,7 +127,7 @@ public class CheckoutFragment extends Fragment {
                     total += itemTotal; // Add to the grand total
 
                     name.setText(product.getName());
-                    qty.setText("Qty: " + item.getQuantity());
+                    qty.setText("X" + item.getQuantity());
                     price.setText(String.format(Locale.US, "₱%.2f", itemTotal));
                 }
                 checkoutItemsContainer.addView(itemView);

@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.firebase.crashlytics.buildtools)
+    // implementation(libs.firebase.common) <-- REMOVED: This causes duplicate class errors with Firestore
 
     // CameraX
     val cameraxVersion = "1.3.3"

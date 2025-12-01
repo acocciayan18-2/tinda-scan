@@ -1,15 +1,21 @@
 package com.example.tindascan;
 
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.activity.EdgeToEdge;
+
+import android.Manifest;
 
 // 🔥 IMPORT FIREBASE
 import com.google.firebase.FirebaseApp;
@@ -59,5 +65,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        NotificationUtils notificationUtils = new NotificationUtils(this);
+
+        // 2. Request Permission for Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
+
+        // 3. Run Daily Checks (Expiry & Backup)
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        notificationUtils.checkExpiryNotifications(dbHelper);
+        notificationUtils.checkBackupReminder(dbHelper); // Updated method signature
     }
 }

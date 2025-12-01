@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="12dp"
     app:cardElevation="2dp"
-    android:layout_marginBottom="12dp"
+    android:layout_marginBottom="8dp"
     app:cardBackgroundColor="@color/white">
 
     <LinearLayout
@@ -14,25 +14,30 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Top Section: Name, Category, Badge -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_alignParentStart="true"  android:layout_toStartOf="@id/tv_stock_count"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/tv_stock_count"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"> <TextView
-                android:id="@+id/tv_product_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Premium Coffee Beans"
-                android:textColor="@color/primaryColor"
-                android:textSize="16sp"
-                android:fontFamily="@font/notosanssemibold" />
+                android:layout_marginEnd="8dp">
+
+                <TextView
+                    android:id="@+id/tv_product_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Premium Coffee Beans"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/notosanssemibold" />
 
                 <TextView
                     android:id="@+id/tv_product_category"
@@ -40,17 +45,17 @@
                     android:layout_height="wrap_content"
                     android:text="Beverages"
                     android:textColor="@color/secondaryColor"
-                    android:textSize="13sp"
-                    android:fontFamily="@font/notosansregular" />
+                    android:textSize="12sp"
+                    android:fontFamily="@font/notosansregular"
+                    android:layout_marginTop="-2dp"/>
 
                 <TextView
                     android:id="@+id/tv_product_expiration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:textColor="@color/black"
-                android:textSize="12sp"
-                android:fontFamily="@font/notosansregular" />
+                    android:textSize="11sp"
+                    android:fontFamily="@font/notosansregular" />
 
             </LinearLayout>
 
@@ -62,19 +67,20 @@
                 android:textColor="@color/white"
                 android:fontFamily="@font/notosanssemibold"
                 android:background="@drawable/stock_badge_background"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:textSize="12sp"/>
+                android:textSize="11sp"/>
         </RelativeLayout>
 
+        <!-- Middle Section: Price and Barcode -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="16dp">
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="8dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -87,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:text="Price"
                     android:textColor="@color/secondaryColor"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:fontFamily="@font/notosansregular" />
 
                 <TextView
@@ -96,8 +102,9 @@
                     android:layout_height="wrap_content"
                     android:text="P12.99"
                     android:textColor="#00943F"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/notosanssemibold" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/notosanssemibold"
+                    android:layout_marginTop="-2dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -111,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:text="Barcode"
                     android:textColor="@color/secondaryColor"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:fontFamily="@font/notosansregular" />
 
                 <TextView
@@ -120,8 +127,9 @@
                     android:layout_height="wrap_content"
                     android:text="1234567890123"
                     android:textColor="@color/primaryColor"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/notosanssemibold" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/notosanssemibold"
+                    android:layout_marginTop="-2dp"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -130,36 +138,53 @@
             android:layout_height="1dp"
             android:background="#F0F0F0" />
 
+        <!-- Bottom Buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingHorizontal="8dp"> <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_delete"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="Delete"
-            android:textSize="14sp"
-            android:fontFamily="@font/notosanssemibold"
-            app:icon="@drawable/ic_trash_stroke"
-            app:iconTint="#D32F2F"
-            android:textColor="#D32F2F" />
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="0dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_delete"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete"
+                android:textSize="13sp"
+                android:fontFamily="@font/notosanssemibold"
+                app:icon="@drawable/ic_trash_stroke"
+                app:iconSize="18dp"
+                app:iconTint="#D32F2F"
+                android:textColor="#D32F2F"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingVertical="8dp"/>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"/>
 
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_edit"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Edit"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:fontFamily="@font/notosanssemibold"
                 app:icon="@drawable/ic_edit"
-                app:iconTint="#1976D2" android:textColor="#1976D2" /> </LinearLayout>
+                app:iconSize="18dp"
+                app:iconTint="#1976D2"
+                android:textColor="#1976D2"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingVertical="8dp"/>
+        </LinearLayout>
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
