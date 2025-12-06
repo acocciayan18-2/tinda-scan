@@ -17,13 +17,14 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/tinda_scan"
+            android:contentDescription="@string/app_name"
             android:layout_marginBottom="24dp"
             android:layout_gravity="center"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome Back"
+            android:text="@string/welcome_back"
             android:textSize="28sp"
             android:textColor="@color/primaryColor"
             android:fontFamily="@font/notosansbold"
@@ -32,17 +33,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login to manage your store."
+            android:text="@string/login_description"
             android:textSize="14sp"
             android:textColor="#666666"
             android:layout_marginBottom="32dp"/>
 
-        <!-- Email -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email Address"
+            android:hint="@string/hint_email"
             android:layout_marginBottom="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -52,14 +52,13 @@
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Password -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/hint_password"
             app:passwordToggleEnabled="true"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="8dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_login_password"
@@ -68,19 +67,28 @@
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Login Button -->
+        <TextView
+            android:id="@+id/tv_forgot_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_password"
+            android:textStyle="bold"
+            android:textColor="@color/primaryColor"
+            android:padding="4dp"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="end"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Log In"
+            android:text="@string/log_in"
             app:cornerRadius="8dp"
             android:paddingVertical="14dp"
             android:fontFamily="@font/notosanssemibold"
             app:backgroundTint="@color/primaryColor"
             android:textColor="@color/white"/>
 
-        <!-- Register Link -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,14 +99,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Don't have an account? "
+                android:text="@string/no_account_prompt"
                 android:textColor="#666666"/>
 
             <TextView
                 android:id="@+id/tv_register_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign Up"
+                android:text="@string/sign_up"
                 android:textStyle="bold"
                 android:textColor="@color/primaryColor"
                 android:padding="4dp"/>

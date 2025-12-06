@@ -25,7 +25,6 @@
         android:background="@android:color/transparent"
         android:padding="0dp">
 
-        <!-- Search Bar -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@android:color/white"
-                    app:queryHint="Search and tap to add product"
+                    app:queryHint="@string/hint_search_product"
                     app:iconifiedByDefault="false"
                     app:queryBackground="@android:color/transparent"
                     android:theme="@style/AppSearchViewStyle" />
@@ -79,14 +78,13 @@
                 android:id="@+id/cart_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Items"
+                android:text="@string/cart_title_items"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:textColor="@color/primaryColor"
                 android:layout_marginBottom="13dp" />
         </LinearLayout>
 
-        <!-- 🔥 WRAPPER: Holds List AND Empty Text separately -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -107,13 +105,12 @@
                     android:orientation="vertical" />
             </ScrollView>
 
-            <!-- 🔥 NEW: Empty State TextView (Centered in the frame) -->
             <TextView
                 android:id="@+id/tv_empty_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Cart is empty"
+                android:text="@string/text_empty_cart"
                 android:textSize="16sp"
                 android:textColor="#999999"
                 android:fontFamily="@font/notosansregular"
@@ -121,7 +118,6 @@
 
         </FrameLayout>
 
-        <!-- Footer -->
         <LinearLayout
             android:id="@+id/footer_container"
             android:layout_width="match_parent"
@@ -138,7 +134,7 @@
                 android:id="@+id/btn_proceed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Proceed"
+                android:text="@string/button_proceed"
                 android:textAllCaps="false"
                 android:fontFamily="@font/notosanssemibold"
                 app:cornerRadius="12dp"
@@ -165,7 +161,7 @@
                 app:icon="@drawable/ic_trash_stroke"
                 app:iconTint="#D32F2F"
                 app:iconSize="20dp"
-                android:contentDescription="Clear cart" />
+                android:contentDescription="@string/content_desc_clear_cart" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -177,7 +173,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Price"
+                    android:text="@string/text_total_price_label"
                     android:textSize="11sp"
                     android:fontFamily="@font/notosansregular"
                     android:textColor="@color/secondaryColor" />

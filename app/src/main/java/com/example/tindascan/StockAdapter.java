@@ -31,8 +31,6 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
     private List<Product> currentProductList;
     private OnProductActionListener listener;
     private ProductFilter productFilter;
-
-    // 🔥 NEW: To fix dropdown values lost on re-entry
     private String lastFilter = "";
 
     public StockAdapter(Context context, List<Product> productList, OnProductActionListener listener) {
@@ -59,16 +57,14 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         holder.tvProductPrice.setText("₱" + String.format("%.2f", product.getPrice()));
         holder.tvStockCount.setText(String.valueOf(product.getStockQuantity()));
 
-        // --- NEW: Show expiration date ---
         String exp = product.getExpirationDate();
         if (exp == null || exp.isEmpty()) {
             holder.tvProductExpiration.setText("No Expiration");
         } else {
-            // 🔥 UPDATE: Format the date before displaying
             String formattedDate = formatDate(exp);
             holder.tvProductExpiration.setText(formattedDate);
 
-            long expMillis = getExpirationMillis(exp); // Keep using original string for calculation
+            long expMillis = getExpirationMillis(exp);
             long today = System.currentTimeMillis();
 
             if (expMillis < today) {
@@ -92,18 +88,16 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         return currentProductList.size();
     }
 
-    // 🔥 NEW Helper to format date for display
     private String formatDate(String dateStr) {
         try {
             // Assumes database stores as yyyy-MM-dd
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             Date date = inputFormat.parse(dateStr);
 
-            // Format to "Aug 3, 2025"
             SimpleDateFormat outputFormat = new SimpleDateFormat("MMM d, yyyy", Locale.US);
             return outputFormat.format(date);
         } catch (Exception e) {
-            return dateStr; // Return original if parsing fails
+            return dateStr;
         }
     }
 
@@ -116,13 +110,11 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         return Long.MAX_VALUE;
     }
 
-    // 🔥 FIX: Allows StockFragment to restore its list after returning
     public void setInitialProductList(List<Product> list) {
         if (list == null) list = new ArrayList<>();
         initialProductList = new ArrayList<>(list);
         currentProductList = new ArrayList<>(list);
 
-        // re-apply last filter automatically
         if (!lastFilter.isEmpty()) {
             getFilter().filter(lastFilter);
         } else {
@@ -147,7 +139,7 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            lastFilter = constraint.toString();  // 🔥 save last used filter
+            lastFilter = constraint.toString();
 
             List<Product> filtered = new ArrayList<>();
 
@@ -177,7 +169,6 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
                 return results;
             }
 
-            // Category + Search
             if (filter.startsWith("COMPOUND:")) {
                 String[] parts = filter.split(":", 3);
                 if (parts.length == 3) {

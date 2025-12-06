@@ -43,15 +43,16 @@ public class OrderHistoryFragment extends Fragment {
 
         // Setup RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        // The adapter calls the correct navigation method on item click
         adapter = new OrderHistoryAdapter(new ArrayList<>(), this::onTransactionClicked);
         recyclerView.setAdapter(adapter);
 
         // Load Data
         loadOrderHistory();
 
-        // Back Button Logic
         btnBack.setOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
     }
+
 
     private void loadOrderHistory() {
         List<Transaction> transactions = dbHelper.getAllTransactions();
@@ -65,10 +66,18 @@ public class OrderHistoryFragment extends Fragment {
         adapter.updateList(transactions);
     }
 
+
     private void onTransactionClicked(Transaction transaction) {
-        // TODO: Navigate to Order Details if needed
-        Toast.makeText(getContext(), "Selected Order #" + transaction.getId(), Toast.LENGTH_SHORT).show();
+        Bundle args = new Bundle();
+        args.putLong("transactionId", transaction.getId());
+        args.putFloat("totalAmount", (float) transaction.getTotalAmount());
+
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_nav_history_to_nav_details, args);
+
+        Toast.makeText(getContext(), "Navigating to Order #" + transaction.getId(), Toast.LENGTH_SHORT).show();
     }
+
 
     @Override
     public void onResume() {

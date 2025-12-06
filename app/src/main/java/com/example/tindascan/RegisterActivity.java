@@ -32,7 +32,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -44,11 +43,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         btnRegister.setOnClickListener(v -> handleRegister());
 
-        // 🔥 UPDATED: Navigate to Login Activity
         tvLoginLink.setOnClickListener(v -> {
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
-            finish(); // Close register so back button doesn't return here
+            finish();
         });
     }
 
@@ -57,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
-        // 1. Validation
+        //  Validation
         if (TextUtils.isEmpty(storeName)) {
             etStoreName.setError("Store name is required");
             return;
@@ -77,7 +75,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         setLoading(true);
 
-        // 2. Create User in Firebase Auth
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
@@ -100,20 +97,16 @@ public class RegisterActivity extends AppCompatActivity {
         userMap.put("email", user.getEmail());
         userMap.put("createdAt", System.currentTimeMillis());
 
-        // Save to 'users' collection using UID as document ID
         db.collection("users").document(user.getUid())
                 .set(userMap)
                 .addOnSuccessListener(aVoid -> {
                     setLoading(false);
                     Toast.makeText(RegisterActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
 
-                    // 3. Clear local security PIN preferences
-                    // This ensures the next screen asks them to "Create PIN" instead of "Enter PIN"
+
                     getSharedPreferences("TindaScanSecurity", MODE_PRIVATE).edit().clear().apply();
 
-                    // 4. Navigate to PIN Setup
                     Intent intent = new Intent(RegisterActivity.this, PinLoginActivity.class);
-                    // Clear back stack so they can't go back to Register page
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 })

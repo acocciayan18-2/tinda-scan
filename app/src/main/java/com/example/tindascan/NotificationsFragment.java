@@ -52,14 +52,12 @@ public class NotificationsFragment extends Fragment {
 
         updateEmptyState(list);
 
-        // Mark all as read since we opened the screen
         dbHelper.markAllNotificationsAsRead();
 
-        // 🔥 SWIPE TO DELETE IMPLEMENTATION
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView rv, @NonNull RecyclerView.ViewHolder vh, @NonNull RecyclerView.ViewHolder target) {
-                return false; // We don't support drag-drop reordering
+                return false;
             }
 
             @Override

@@ -11,31 +11,31 @@
 
 
     <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="56dp"
-    android:background="@color/white"
-    android:elevation="4dp"
-    android:paddingHorizontal="16dp">
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:paddingHorizontal="16dp">
 
-    <ImageButton
-        android:id="@+id/btn_back_edit"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_back_btn"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:tint="@color/black"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true" />
+        <ImageButton
+            android:id="@+id/btn_back_edit"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_back_btn"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/black"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit Product"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:fontFamily="@font/notosansbold"
-        android:layout_centerInParent="true" />
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_edit_product"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:fontFamily="@font/notosansbold"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Product Name"
+                android:hint="@string/hint_product_name"
                 android:layout_marginBottom="12dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_edit_name"
@@ -66,7 +66,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Barcode"
+                android:hint="@string/hint_barcode"
                 android:layout_marginBottom="12dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_edit_barcode"
@@ -79,7 +79,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Category"
+                android:hint="@string/hint_category"
                 android:layout_marginBottom="12dp">
                 <AutoCompleteTextView
                     android:id="@+id/dropdown_edit_category"
@@ -93,7 +93,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Weight (e.g. 500g)"
+                android:hint="@string/hint_weight"
                 android:layout_marginBottom="12dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_edit_weight"
@@ -112,8 +112,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="Cost Price"
-                    app:prefixText="₱"
+                    android:hint="@string/hint_cost_price"
+                    app:prefixText="@string/currency_prefix"
                     android:layout_marginEnd="8dp">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_edit_cost"
@@ -127,8 +127,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="Selling Price"
-                    app:prefixText="₱"
+                    android:hint="@string/hint_selling_price"
+                    app:prefixText="@string/currency_prefix"
                     android:layout_marginStart="8dp">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_edit_price"
@@ -149,7 +149,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="Quantity"
+                    android:hint="@string/hint_quantity"
                     android:layout_marginEnd="8dp">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_edit_qty"
@@ -163,7 +163,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="Low Alert"
+                    android:hint="@string/hint_low_alert"
                     android:layout_marginStart="8dp">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_edit_low_stock"
@@ -178,7 +178,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Expiration Date"
+                android:hint="@string/hint_expiration_date"
                 app:endIconDrawable="@drawable/ic_calendar"
                 app:endIconMode="custom">
                 <com.google.android.material.textfield.TextInputEditText
@@ -207,7 +207,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/notosanssemibold"
-            android:text="Cancel"
+            android:text="@string/button_cancel"
             android:textColor="@color/secondaryColor" />
 
         <com.google.android.material.button.MaterialButton
@@ -217,7 +217,7 @@
             android:fontFamily="@font/notosanssemibold"
             android:paddingHorizontal="24dp"
             android:paddingVertical="12dp"
-            android:text="Save Changes"
+            android:text="@string/button_save_changes"
             app:backgroundTint="@color/primaryColor"
             app:cornerRadius="8dp" />
     </LinearLayout>

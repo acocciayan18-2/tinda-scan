@@ -17,7 +17,6 @@ import androidx.activity.EdgeToEdge;
 
 import android.Manifest;
 
-// 🔥 IMPORT FIREBASE
 import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        // 🔥 INITIALIZE FIREBASE MANUALLY HERE
-        // This prevents the "Default FirebaseApp is not initialized" crash
+
         if (FirebaseApp.getApps(this).isEmpty()) {
             FirebaseApp.initializeApp(this);
         }
@@ -78,6 +76,6 @@ public class MainActivity extends AppCompatActivity {
         // 3. Run Daily Checks (Expiry & Backup)
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         notificationUtils.checkExpiryNotifications(dbHelper);
-        notificationUtils.checkBackupReminder(dbHelper); // Updated method signature
+        notificationUtils.checkBackupReminder(dbHelper);
     }
 }

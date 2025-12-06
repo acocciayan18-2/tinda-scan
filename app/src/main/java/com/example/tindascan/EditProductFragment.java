@@ -113,7 +113,6 @@ public class EditProductFragment extends Fragment {
         int qty = parseInt(etQty.getText().toString());
         int low = parseInt(etLow.getText().toString());
 
-        // Create updated object using the ORIGINAL ID
         Product updatedProduct = new Product(
                 currentProduct.getId(),
                 name, cat, barcode, price, qty, weight, expiry, cost, low

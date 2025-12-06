@@ -25,11 +25,9 @@ public class CheckoutFragment extends Fragment {
     private CartStorage cartStorage;
     private LinearLayout checkoutItemsContainer;
 
-    // ✅ --- ADDED ---
     private DatabaseHelper dbHelper;
     private TextView tvCheckoutTotal;
-    private List<CartItem> currentCartItems; // Stores the loaded cart
-    // --- END ---
+    private List<CartItem> currentCartItems;
 
     public CheckoutFragment() {
         super(R.layout.fragment_checkout);
@@ -40,19 +38,17 @@ public class CheckoutFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         cartStorage = new CartStorage(requireContext());
-        dbHelper = new DatabaseHelper(requireContext()); // ✅ Initialize dbHelper
+        dbHelper = new DatabaseHelper(requireContext());
 
         checkoutItemsContainer = view.findViewById(R.id.checkout_items_container);
-        // ✅ Make sure this ID exists in your R.layout.fragment_checkout
-//        tvCheckoutTotal = view.findViewById(R.id.tv_checkout_total);
+
+ //  tvCheckoutTotal = view.findViewById(R.id.tv_checkout_total);
 
         MaterialButton btnConfirm = view.findViewById(R.id.btn_confirm_checkout);
         View btnBack = view.findViewById(R.id.btn_back_to_cart);
 
-        // ✅ Load items and update total price
         loadCheckoutItems();
 
-        // ✅ --- UPDATED: This now calls the database ---
         btnConfirm.setOnClickListener(v -> {
             handleConfirmCheckout();
         });
@@ -62,9 +58,7 @@ public class CheckoutFragment extends Fragment {
         });
     }
 
-    /**
-     * ✅ NEW: Handles the database logic
-     */
+
     private void handleConfirmCheckout() {
         if (currentCartItems == null || currentCartItems.isEmpty()) {
             Toast.makeText(requireContext(), "Nothing to check out!", Toast.LENGTH_SHORT).show();
@@ -85,9 +79,7 @@ public class CheckoutFragment extends Fragment {
         }
     }
 
-    /**
-     * ✅ NEW: Helper method to calculate the total price
-     */
+
     private double calculateTotalPrice() {
         double total = 0.0;
         if (currentCartItems == null) return total;
@@ -101,7 +93,7 @@ public class CheckoutFragment extends Fragment {
     }
 
     private void loadCheckoutItems() {
-        currentCartItems = cartStorage.loadCart(); // ✅ Save items to a field
+        currentCartItems = cartStorage.loadCart();
         checkoutItemsContainer.removeAllViews();
 
         LayoutInflater inflater = LayoutInflater.from(requireContext());
@@ -124,7 +116,7 @@ public class CheckoutFragment extends Fragment {
 
                 if (product != null) {
                     double itemTotal = product.getSellingPrice() * item.getQuantity();
-                    total += itemTotal; // Add to the grand total
+                    total += itemTotal;
 
                     name.setText(product.getName());
                     qty.setText("X" + item.getQuantity());
@@ -134,7 +126,6 @@ public class CheckoutFragment extends Fragment {
             }
         }
 
-        // ✅ Update the total price TextView
         if (tvCheckoutTotal != null) {
             tvCheckoutTotal.setText(String.format(Locale.US, "₱%.2f", total));
         }

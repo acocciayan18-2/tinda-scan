@@ -105,7 +105,7 @@ public class Product implements Serializable {
     public String getName() { return name; }
     public String getCategory() { return category; }
     public String getBarcode() { return barcode; }
-    public double getPrice() { return sellingPrice; } // Returns sellingPrice for compatibility
+    public double getPrice() { return sellingPrice; }
     public double getSellingPrice() { return sellingPrice; }
     public double getCostPrice() { return costPrice; }
     public int getLowStockAlert() { return lowStockAlert; }
@@ -118,7 +118,7 @@ public class Product implements Serializable {
     public void setName(String name) { this.name = name; }
     public void setCategory(String category) { this.category = category; }
     public void setBarcode(String barcode) { this.barcode = barcode; }
-    public void setPrice(double price) { this.sellingPrice = price; } // Sets sellingPrice
+    public void setPrice(double price) { this.sellingPrice = price; }
     public void setSellingPrice(double sellingPrice) { this.sellingPrice = sellingPrice; }
     public void setCostPrice(double costPrice) { this.costPrice = costPrice; }
     public void setLowStockAlert(int lowStockAlert) { this.lowStockAlert = lowStockAlert; }

@@ -23,24 +23,22 @@ public class Scan extends Fragment {
             activity.getSupportActionBar().setTitle("Scanner");
         }
 
-        // 1. Find the MaterialCardView elements
         MaterialCardView cardPriceCheck = view.findViewById(R.id.card_price_check);
         MaterialCardView cardAddToCart = view.findViewById(R.id.card_add_to_cart);
         MaterialCardView cardInventoryCheck = view.findViewById(R.id.card_inventory_check);
 
-        // 2. Implement Click Listeners for Navigation
 
-        // Price Check: Navigate using the defined ACTION ID.
+        // Price Check
         cardPriceCheck.setOnClickListener(v -> {
             NavHostFragment.findNavController(this).navigate(R.id.action_scan_to_price_check);
         });
 
-        // Add to Cart: Navigate using the defined ACTION ID.
+        // Add to Cart:
         cardAddToCart.setOnClickListener(v -> {
             NavHostFragment.findNavController(this).navigate(R.id.action_scan_to_cart);
         });
 
-        // Inventory Check: Navigate using the defined ACTION ID.
+        // Inventory Check:
         cardInventoryCheck.setOnClickListener(v -> {
             NavHostFragment.findNavController(this).navigate(R.id.action_scan_to_inventory_management);
         });

@@ -32,7 +32,7 @@
                 android:id="@+id/tv_stock_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Stock"
+                android:text="@string/title_stock"
                 android:textSize="32sp"
                 android:textColor="@color/primaryColor"
                 android:fontFamily="@font/notosansbold" />
@@ -41,17 +41,18 @@
                 android:id="@+id/tv_product_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4 products"
+                android:text="@string/stock_product_count_placeholder"
                 android:textSize="14sp"
                 android:textColor="@color/secondaryColor"
-                android:fontFamily="@font/notosansregular" />
+                android:fontFamily="@font/notosansregular"
+                tools:text="4 products" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_add_product"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add"
+            android:text="@string/btn_add_product"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             app:icon="@drawable/ic_add"
@@ -77,7 +78,7 @@
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            app:queryHint="Search products..."
+            app:queryHint="@string/hint_search_products"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
             android:theme="@style/AppSearchViewStyle" />
@@ -95,6 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginEnd="2dp"
+            android:hint="@string/dropdown_hint_categories"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
@@ -120,6 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="8dp"
+            android:hint="@string/dropdown_hint_stock_status"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
@@ -151,12 +154,11 @@
         tools:listitem="@layout/item_stock_card"
         tools:itemCount="1" />
 
-    <!-- 🔥 NEW: Empty State TextView -->
     <TextView
         android:id="@+id/tv_empty_state"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="No products found matching your filters."
+        android:text="@string/empty_state_stock"
         android:gravity="center"
         android:textSize="14sp"
         android:textColor="@color/secondaryColor"

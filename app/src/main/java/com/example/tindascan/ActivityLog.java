@@ -1,7 +1,7 @@
 package com.example.tindascan;
 
 public class ActivityLog {
-    private String type;    // "SALE", "ADD", "EDIT", "DELETE", "BACKUP", "RESTORE"
+    private String type;
     private String details;
     private String timestamp;
 

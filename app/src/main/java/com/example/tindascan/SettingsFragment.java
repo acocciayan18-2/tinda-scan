@@ -40,10 +40,8 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setupSwitch(MaterialSwitch sw, String key) {
-        // Set initial state (Default true)
         sw.setChecked(prefs.getBoolean(key, true));
 
-        // Save on change
         sw.setOnCheckedChangeListener((buttonView, isChecked) -> {
             prefs.edit().putBoolean(key, isChecked).apply();
         });

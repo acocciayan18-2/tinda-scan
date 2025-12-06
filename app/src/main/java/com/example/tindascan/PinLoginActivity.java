@@ -18,7 +18,7 @@ public class PinLoginActivity extends AppCompatActivity {
 
     private StringBuilder currentPin = new StringBuilder();
     private View[] dots;
-    private TextView tvTitle, tvMessage, tvForgotPin; // Added tvForgotPin
+    private TextView tvTitle, tvMessage, tvForgotPin;
 
     private static final String PREF_NAME = "TindaScanSecurity";
     private static final String KEY_PIN = "user_pin";
@@ -33,7 +33,7 @@ public class PinLoginActivity extends AppCompatActivity {
 
         tvTitle = findViewById(R.id.tv_pin_title);
         tvMessage = findViewById(R.id.tv_pin_message);
-        tvForgotPin = findViewById(R.id.tv_forgot_pin); // Bind the Forgot PIN view
+        tvForgotPin = findViewById(R.id.tv_forgot_pin);
 
         // Initialize Dots
         dots = new View[]{
@@ -43,7 +43,6 @@ public class PinLoginActivity extends AppCompatActivity {
                 findViewById(R.id.dot_4)
         };
 
-        // 🔥 NEW: Set listener for Forgot PIN
         tvForgotPin.setOnClickListener(v -> handleForgotPin());
 
         checkState();
@@ -63,7 +62,6 @@ public class PinLoginActivity extends AppCompatActivity {
 
                     // 3. Go to Login Screen
                     Intent intent = new Intent(PinLoginActivity.this, LoginActivity.class);
-                    // Clear back stack so they can't return here
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
 
@@ -74,42 +72,35 @@ public class PinLoginActivity extends AppCompatActivity {
     }
 
     private void checkState() {
-        // 🔥 STEP 1: Check if User is Logged In to Firebase
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (currentUser == null) {
-            // No user logged in -> Redirect to Login Screen
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
-            finish(); // Close this activity so back button exits app
+            finish();
             return;
         }
 
-        // 🔥 STEP 2: If Logged In, Check PIN Status
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String savedPin = prefs.getString(KEY_PIN, null);
         boolean isLocked = prefs.getBoolean(KEY_IS_LOCKED, false);
 
         if (savedPin == null) {
-            // SCENARIO 1: Account exists (logged in), but PIN not set locally (New Device/Install)
             isCreatingNewPin = true;
             tvTitle.setText("Create PIN");
             tvMessage.setText("Set a 4-digit PIN for your store");
-            tvForgotPin.setVisibility(View.INVISIBLE); // Hide "Forgot PIN" (setting up new)
+            tvForgotPin.setVisibility(View.INVISIBLE);
         } else if (isLocked) {
-            // SCENARIO 2: App is locked manually (Logout/Lock button)
             isCreatingNewPin = false;
             tvTitle.setText("Welcome Back");
             tvMessage.setText("Enter PIN to access store");
-            tvForgotPin.setVisibility(View.VISIBLE); // Show "Forgot PIN"
+            tvForgotPin.setVisibility(View.VISIBLE);
         } else {
-            // SCENARIO 3: App is not locked, normally we skip this screen.
-            // Check if we were sent here explicitly to Reset PIN.
             if (getIntent().getBooleanExtra("reset_mode", false)) {
                 isCreatingNewPin = true;
                 tvTitle.setText("Reset PIN");
                 tvMessage.setText("Enter your new 4-digit PIN");
-                tvForgotPin.setVisibility(View.INVISIBLE); // Hide "Forgot PIN" (resetting)
+                tvForgotPin.setVisibility(View.INVISIBLE);
             } else {
                 // Not locked, just go home
                 goToHome();
@@ -158,14 +149,11 @@ public class PinLoginActivity extends AppCompatActivity {
             Toast.makeText(this, "PIN Created Successfully!", Toast.LENGTH_SHORT).show();
             goToHome();
         } else {
-            // Check existing PIN
             String savedPin = prefs.getString(KEY_PIN, "");
             if (currentPin.toString().equals(savedPin)) {
-                // Correct!
                 prefs.edit().putBoolean(KEY_IS_LOCKED, false).apply(); // Set as unlocked
                 goToHome();
             } else {
-                // Wrong
                 Toast.makeText(this, "Incorrect PIN", Toast.LENGTH_SHORT).show();
                 currentPin.setLength(0); // Clear input
                 updateDots();
@@ -176,6 +164,6 @@ public class PinLoginActivity extends AppCompatActivity {
     private void goToHome() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        finish(); // Close this activity
+        finish();
     }
 }

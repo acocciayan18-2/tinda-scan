@@ -31,7 +31,6 @@ public class Home extends Fragment {
     private RecentActivityAdapter activityAdapter;
     private DatabaseHelper dbHelper;
 
-    // 🔥 Notification Views
     private View notifBell;
     private TextView tvBadge;
 
@@ -59,7 +58,7 @@ public class Home extends Fragment {
         ivRefresh = view.findViewById(R.id.iv_refresh); // Re-enabled refresh
         tvNoActivities = view.findViewById(R.id.tv_no_activities);
 
-        // 🔥 Initialize Notification Views
+        //  Initialize Notification Views
         notifBell = view.findViewById(R.id.fl_notification);
         tvBadge = view.findViewById(R.id.tv_notification_badge);
 
@@ -89,7 +88,7 @@ public class Home extends Fragment {
             });
         }
 
-        // 🔥 Notification Bell Click Listener
+        //  Notification Bell Click Listener
         if (notifBell != null) {
             notifBell.setOnClickListener(v -> {
                 // Navigate to Notifications Fragment
@@ -147,7 +146,7 @@ public class Home extends Fragment {
             if (rvRecentActivities != null) rvRecentActivities.setVisibility(View.VISIBLE);
         }
 
-        // 🔥 3. Update Notification Badge
+        //  3. Update Notification Badge
         if (tvBadge != null) {
             int unreadCount = dbHelper.getUnreadNotificationCount();
             if (unreadCount > 0) {

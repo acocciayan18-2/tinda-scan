@@ -23,7 +23,7 @@
             android:layout_height="24dp"
             android:src="@drawable/ic_back_btn"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Back"
+            android:contentDescription="@string/content_desc_back"
             app:tint="@color/black"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true" />
@@ -32,7 +32,7 @@
             android:id="@+id/dialog_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add New Product"
+            android:text="@string/dialog_title_add_product"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:fontFamily="@font/notosansbold"
@@ -58,7 +58,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Product Name *"
+                android:hint="@string/hint_product_name"
                 android:layout_marginBottom="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -88,7 +88,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="Barcode"
+                        android:hint="@string/hint_barcode"
                         android:layout_marginEnd="8dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_barcode_input"
@@ -114,7 +114,7 @@
                     android:id="@+id/tv_barcode_check_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Double-check barcode numbers"
+                    android:text="@string/message_barcode_check"
                     android:textColor="@color/secondaryColor"
                     android:textSize="12sp"
                     android:layout_marginTop="4dp"
@@ -148,7 +148,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Category *"
+                android:hint="@string/hint_category"
                 android:layout_marginBottom="12dp">
 
                 <AutoCompleteTextView
@@ -164,7 +164,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Weight"
+                android:hint="@string/hint_weight"
                 android:layout_marginBottom="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -187,8 +187,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Cost Price *"
-                    app:prefixText="₱"
+                    android:hint="@string/hint_cost_price"
+                    app:prefixText="@string/currency_symbol_peso"
                     android:layout_marginEnd="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -206,8 +206,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Selling Price *"
-                    app:prefixText="₱"
+                    android:hint="@string/hint_selling_price"
+                    app:prefixText="@string/currency_symbol_peso"
                     android:layout_marginStart="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -232,7 +232,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Stock Quantity *"
+                    android:hint="@string/hint_stock_quantity"
                     android:layout_marginEnd="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -250,7 +250,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Low Stock Alert"
+                    android:hint="@string/hint_low_stock_alert"
                     android:layout_marginStart="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -268,7 +268,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Expiration Date"
+                android:hint="@string/hint_expiration_date"
                 app:endIconDrawable="@drawable/ic_calendar"
                 app:endIconMode="custom">
 
@@ -297,7 +297,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="@string/button_cancel"
             android:textColor="@color/secondaryColor"
             android:fontFamily="@font/notosanssemibold"
             android:layout_marginEnd="8dp" />
@@ -306,7 +306,7 @@
             android:id="@+id/btn_add_product"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Product"
+            android:text="@string/button_add_product"
             app:backgroundTint="@color/primaryColor"
             android:fontFamily="@font/notosanssemibold"
             app:cornerRadius="8dp"

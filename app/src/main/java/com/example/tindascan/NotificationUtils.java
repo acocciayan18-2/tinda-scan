@@ -33,19 +33,19 @@ public class NotificationUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager manager = context.getSystemService(NotificationManager.class);
 
-            // 1. Inventory Channel (High Priority)
+            // 1. Inventory Channel
             NotificationChannel inventory = new NotificationChannel(CHANNEL_INVENTORY, "Inventory Alerts", NotificationManager.IMPORTANCE_HIGH);
             inventory.setDescription("Low stock and out of stock alerts");
 
-            // 2. Expiry Channel (Default)
+            // 2. Expiry Channel
             NotificationChannel expiry = new NotificationChannel(CHANNEL_EXPIRY, "Expiration Warnings", NotificationManager.IMPORTANCE_DEFAULT);
             expiry.setDescription("Products nearing expiration date");
 
-            // 3. Reports Channel (Low)
+            // 3. Reports Channel
             NotificationChannel reports = new NotificationChannel(CHANNEL_REPORTS, "Daily Reports", NotificationManager.IMPORTANCE_LOW);
             reports.setDescription("End of day sales summary");
 
-            // 4. System Channel (Min)
+            // 4. System Channel
             NotificationChannel system = new NotificationChannel(CHANNEL_SYSTEM, "System & Backup", NotificationManager.IMPORTANCE_MIN);
             system.setDescription("Backup reminders");
 
@@ -58,7 +58,6 @@ public class NotificationUtils {
         }
     }
 
-    // --- PUBLIC TRIGGER METHODS ---
 
     public void checkInventoryNotifications(DatabaseHelper db) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -67,7 +66,6 @@ public class NotificationUtils {
         List<Product> lowStock = db.getLowStockProducts();
         List<Product> outOfStock = db.getOutOfStockProducts();
 
-        // 1. Save INDIVIDUAL notifications to In-App History
         for (Product p : outOfStock) {
             db.saveNotification("Out of Stock",
                     p.getName() + " is sold out. Restock immediately.", "INVENTORY");
@@ -77,7 +75,6 @@ public class NotificationUtils {
                     p.getName() + " is running low (" + p.getStockQuantity() + " left).", "INVENTORY");
         }
 
-        // 2. Show SUMMARY System Notification (To avoid spam)
         if (!outOfStock.isEmpty()) {
             String message = outOfStock.size() + " items are sold out. Check app for details.";
             showSystemNotification(CHANNEL_INVENTORY, 101, "Stock Alert", message);
@@ -93,13 +90,11 @@ public class NotificationUtils {
 
         List<Product> expiring = db.getExpiringProducts();
 
-        // 1. Save to In-App History
         for (Product p : expiring) {
             db.saveNotification("Expiring Soon",
                     p.getName() + " expires on " + p.getExpirationDate() + ".", "EXPIRY");
         }
 
-        // 2. Show System Notification
         if (!expiring.isEmpty()) {
             showSystemNotification(CHANNEL_EXPIRY, 201, "Expiration Warning",
                     expiring.size() + " products are expiring within 7 days.");
@@ -117,10 +112,8 @@ public class NotificationUtils {
             String title = "Backup Reminder";
             String msg = "You haven't backed up your data recently. Sync now to prevent data loss.";
 
-            // Save to In-App
             dbHelper.saveNotification(title, msg, "SYSTEM");
 
-            // Show System Notification
             showSystemNotification(CHANNEL_SYSTEM, 301, title, msg);
         }
     }
@@ -133,16 +126,13 @@ public class NotificationUtils {
             String title = "Daily Sales Report";
             String msg = String.format("Good job! You made ₱%.2f from %d transactions today.", sales, transactionCount);
 
-            // Save to In-App (Instantiate DB helper here since it's not passed)
             DatabaseHelper db = new DatabaseHelper(context);
             db.saveNotification(title, msg, "REPORT");
 
-            // Show System Notification
             showSystemNotification(CHANNEL_REPORTS, 401, title, msg);
         }
     }
 
-    // --- INTERNAL HELPER ---
     private void showSystemNotification(String channelId, int notificationId, String title, String content) {
         try {
             Intent intent = new Intent(context, MainActivity.class);
@@ -159,7 +149,6 @@ public class NotificationUtils {
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-            // Check permission for Android 13+ (TIRAMISU)
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
                     androidx.core.content.ContextCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) == android.content.pm.PackageManager.PERMISSION_GRANTED) {
                 notificationManager.notify(notificationId, builder.build());

@@ -4,7 +4,7 @@ public class AppNotification {
     private int id;
     private String title;
     private String message;
-    private String type; // "LOW_STOCK", "EXPIRY", "SYSTEM"
+    private String type;
     private String timestamp;
     private boolean isRead;
 

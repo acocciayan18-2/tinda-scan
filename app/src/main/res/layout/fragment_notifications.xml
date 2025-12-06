@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notifications"
+            android:text="@string/notifications"
             android:textSize="20sp"
             android:fontFamily="@font/notosansbold"
             android:textColor="@color/black"

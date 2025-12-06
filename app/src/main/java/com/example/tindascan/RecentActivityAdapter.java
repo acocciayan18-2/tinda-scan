@@ -39,42 +39,41 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
         holder.tvDetails.setText(log.getDetails());
         holder.tvTime.setText(log.getTimestamp());
 
-        // Dynamic Styling based on Type
         switch (log.getType()) {
             case "SALE":
                 holder.tvTitle.setText("New Sale");
                 holder.ivIcon.setImageResource(R.drawable.ic_peso_sign);
-                holder.cardIconBg.setCardBackgroundColor(Color.parseColor("#E8F5E9")); // Light Green
+                holder.cardIconBg.setCardBackgroundColor(Color.parseColor("#E8F5E9"));
                 holder.ivIcon.setColorFilter(Color.parseColor("#4CAF50"));
                 break;
             case "ADD":
                 holder.tvTitle.setText("Product Added");
                 holder.ivIcon.setImageResource(R.drawable.ic_add);
-                holder.cardIconBg.setCardBackgroundColor(Color.parseColor("#E3F2FD")); // Light Blue
+                holder.cardIconBg.setCardBackgroundColor(Color.parseColor("#E3F2FD"));
                 holder.ivIcon.setColorFilter(Color.parseColor("#2196F3"));
                 break;
             case "EDIT":
                 holder.tvTitle.setText("Product Updated");
                 holder.ivIcon.setImageResource(R.drawable.ic_edit);
-                holder.cardIconBg.setCardBackgroundColor(Color.parseColor("#FFF3E0")); // Light Orange
+                holder.cardIconBg.setCardBackgroundColor(Color.parseColor("#FFF3E0"));
                 holder.ivIcon.setColorFilter(Color.parseColor("#FF9800"));
                 break;
             case "DELETE":
                 holder.tvTitle.setText("Product Deleted");
                 holder.ivIcon.setImageResource(R.drawable.ic_trash_stroke);
-                holder.cardIconBg.setCardBackgroundColor(Color.parseColor("#FFEBEE")); // Light Red
+                holder.cardIconBg.setCardBackgroundColor(Color.parseColor("#FFEBEE"));
                 holder.ivIcon.setColorFilter(Color.parseColor("#F44336"));
                 break;
             case "BACKUP":
                 holder.tvTitle.setText("Data Backup");
                 holder.ivIcon.setImageResource(R.drawable.ic_download); // or cloud upload
-                holder.cardIconBg.setCardBackgroundColor(Color.parseColor("#F3E5F5")); // Light Purple
+                holder.cardIconBg.setCardBackgroundColor(Color.parseColor("#F3E5F5"));
                 holder.ivIcon.setColorFilter(Color.parseColor("#9C27B0"));
                 break;
             case "RESTORE":
                 holder.tvTitle.setText("Data Restored");
                 holder.ivIcon.setImageResource(R.drawable.ic_upload); // or cloud download
-                holder.cardIconBg.setCardBackgroundColor(Color.parseColor("#F3E5F5")); // Light Purple
+                holder.cardIconBg.setCardBackgroundColor(Color.parseColor("#F3E5F5"));
                 holder.ivIcon.setColorFilter(Color.parseColor("#9C27B0"));
                 break;
             default:

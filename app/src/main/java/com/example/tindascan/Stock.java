@@ -33,7 +33,6 @@ public class Stock extends Fragment implements AddProductFragment.OnProductAdded
     private SearchView searchView;
     private TextView tvProductCount;
 
-    // 🔥 NEW: Empty State TextView
     private TextView tvEmptyState;
 
     private AutoCompleteTextView dropdownCategories, dropdownStock;
@@ -154,7 +153,6 @@ public class Stock extends Fragment implements AddProductFragment.OnProductAdded
                 String weight = cursor.getString(cursor.getColumnIndexOrThrow("weight"));
                 String expirationDate = cursor.getString(cursor.getColumnIndexOrThrow("expiration_date"));
 
-                // Get missing columns safely
                 double costPrice = 0.0;
                 if(cursor.getColumnIndex("cost_price") != -1)
                     costPrice = cursor.getDouble(cursor.getColumnIndexOrThrow("cost_price"));
@@ -222,7 +220,6 @@ public class Stock extends Fragment implements AddProductFragment.OnProductAdded
             tvProductCount.setText(filteredList.size() + " products");
         }
 
-        // 🔥 NEW: Toggle Empty State Visibility
         if (filteredList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             tvEmptyState.setVisibility(View.VISIBLE);
@@ -271,7 +268,6 @@ public class Stock extends Fragment implements AddProductFragment.OnProductAdded
         stockAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, stockFilters);
         dropdownStock.setAdapter(stockAdapter);
 
-        // Sync variables with the text shown on screen
         String currentCategoryText = dropdownCategories.getText().toString();
         String currentStockText = dropdownStock.getText().toString();
 

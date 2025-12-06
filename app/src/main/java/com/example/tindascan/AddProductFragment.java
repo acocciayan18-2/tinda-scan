@@ -97,7 +97,6 @@ public class AddProductFragment extends Fragment {
         tilExpirationDate = view.findViewById(R.id.til_expiration_date);
         btnCancel = view.findViewById(R.id.btn_cancel);
         btnAddProduct = view.findViewById(R.id.btn_add_product);
-//        btnClose = view.findViewById(R.id.btn_close_dialog);
         previewView = view.findViewById(R.id.camera_preview);
         cameraContainer = view.findViewById(R.id.camera_container);
         tvBarcodeCheckMessage = view.findViewById(R.id.tv_barcode_check_message);

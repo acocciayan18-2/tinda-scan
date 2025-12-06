@@ -59,18 +59,17 @@ public class More extends Fragment {
             }
         });
 
-        // 2. Settings (🔥 FIXED: Opens Settings Fragment)
+        // 2. Settings
         View btnSettings = view.findViewById(R.id.card_settings);
         btnSettings.setOnClickListener(v -> {
-            // Ensure 'nav_settings' exists in your nav_graph.xml
             NavHostFragment.findNavController(this).navigate(R.id.nav_settings);
         });
 
-        // 3. Export Data (Upload to Firebase)
+        // 3. Export Data
         View btnExport = view.findViewById(R.id.card_export);
         btnExport.setOnClickListener(v -> handleExport());
 
-        // 4. Import Data (Download from Firebase)
+        // 4. Import Data
         View btnImport = view.findViewById(R.id.card_import);
         btnImport.setOnClickListener(v -> handleImport());
 
@@ -104,13 +103,11 @@ public class More extends Fragment {
         });
     }
 
-    // --- Helper Methods for Sync ---
 
     private void showProgressDialog(String title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         View view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_sync_progress, null);
 
-        // Match IDs from your XML
         tvProgressTitle = view.findViewById(R.id.tv_progress_title);
         tvProgressMessage = view.findViewById(R.id.tv_progress_message);
         progressBar = view.findViewById(R.id.progressBar);

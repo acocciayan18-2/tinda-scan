@@ -1,3 +1,142 @@
 <resources>
     <string name="app_name">TindaScan</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="login_description">Login to manage your store.</string>
+    <string name="hint_email">Email Address</string>
+    <string name="hint_password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="log_in">Log In</string>
+    <string name="no_account_prompt">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+
+    <string name="pin_title">Enter PIN</string>
+    <string name="pin_message">Please enter your 4-digit PIN</string>
+    <string name="forgot_pin">Forgot PIN?</string>
+    <string name="content_description_lock">Lock icon</string>
+    <string name="content_description_backspace">Delete PIN digit</string>
+    <string name="keypad_key_1">1</string>
+    <string name="keypad_key_2">2</string>
+    <string name="keypad_key_3">3</string>
+    <string name="keypad_key_4">4</string>
+    <string name="keypad_key_5">5</string>
+    <string name="keypad_key_6">6</string>
+    <string name="keypad_key_7">7</string>
+    <string name="keypad_key_8">8</string>
+    <string name="keypad_key_9">9</string>
+    <string name="keypad_key_0">0</string>
+
+    <string name="create_account_title">Create Account</string>
+    <string name="create_account_description">Start managing your Sari-sari store today.</string>
+    <string name="hint_store_name">Store Name</string>
+    <string name="button_create_account">Create Account &amp; Set PIN</string>
+    <string name="login_link">Already have an account? Login</string>
+
+    <string name="hint_search_product">Search and tap to add product</string>
+    <string name="cart_title_items">Items</string>
+    <string name="text_empty_cart">Cart is empty</string>
+    <string name="button_proceed">Proceed</string>
+    <string name="content_desc_clear_cart">Clear cart</string>
+    <string name="text_total_price_label">Total Price</string>
+
+
+    <string name="content_desc_back">Back</string>
+    <string name="dialog_title_add_product">Add New Product</string>
+    <string name="hint_product_name">Product Name *</string>
+    <string name="hint_barcode">Barcode</string>
+    <string name="message_barcode_check">Double-check barcode numbers</string>
+    <string name="hint_category">Category *</string>
+    <string name="hint_weight">Weight</string>
+    <string name="hint_cost_price">Cost Price *</string>
+    <string name="hint_selling_price">Selling Price *</string>
+    <string name="hint_stock_quantity">Stock Quantity *</string>
+    <string name="hint_low_stock_alert">Low Stock Alert</string>
+    <string name="hint_expiration_date">Expiration Date</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_add_product">Add Product</string>
+    <string name="currency_symbol_peso">₱</string>
+
+    <string name="title_checkout">Checkout</string>
+    <string name="button_confirm_checkout">Confirm Checkout</string>
+
+    <string name="title_edit_product">Edit Product</string>
+    <string name="currency_prefix">₱</string>
+    <string name="hint_quantity">Quantity</string>
+    <string name="hint_low_alert">Low Alert</string>
+    <string name="button_save_changes">Save Changes</string>
+    <string name="notifications">Notifications</string>
+
+    <string name="title_sale_details">Sale Details</string>
+    <string name="text_total_label">Total:</string>
+    <string name="default_total_price">₱0.00</string>
+
+    <string name="title_order_history">Order History</string>
+    <string name="default_order_count">0 Orders</string>
+
+    <string name="title_price_check_scanner">Price Check Scanner</string>
+    <string name="label_product_name">Product Name</string>
+    <string name="label_price">Price</string>
+    <string name="label_description">Description</string>
+    <string name="text_scanning_for_product">Scanning for product...</string>
+    <string name="description">No description available.</string>
+
+    <string name="title_home">Home</string>
+    <string name="content_desc_refresh">Refresh Data</string>
+    <string name="content_desc_notifications">Notifications</string>
+    <string name="stat_todays_profit">Today\'s Profit</string>
+    <string name="stat_todays_sales">Today\'s Sales</string>
+    <string name="stat_products">Products</string>
+    <string name="stat_low_stock">Low Stock</string>
+    <string name="default_currency_value">\%1\$s0</string>
+    <string name="default_count_value">0</string>
+    <string name="section_recent_activity">Recent Activity</string>
+    <string name="tooltip_clear_logs">Clear Activity Logs</string>
+    <string name="text_no_recent_activities">No recent activities</string>
+
+    <string name="title_settings">Settings</string>
+    <string name="section_notifications">Notifications</string>
+    <string name="switch_low_stock">Low Stock Alerts</string>
+    <string name="switch_expiry">Expiration Warnings</string>
+    <string name="switch_sales_reports">Daily Sales Reports</string>
+    <string name="switch_backup">Backup Reminders</string>
+    <string name="content_desc_back_settings">Back to Previous Screen</string>
+
+    <string name="title_more">More</string>
+    <string name="subtitle_more">Settings and options</string>
+
+    <string name="item_orders_history">Orders History</string>
+    <string name="item_orders_desc">View all past orders</string>
+    <string name="item_settings">Settings</string>
+    <string name="item_settings_desc">App preferences</string>
+    <string name="item_export">Export Data</string>
+    <string name="item_export_desc">Backup your data</string>
+    <string name="item_import">Import Data</string>
+    <string name="item_import_desc">Restore from backup</string>
+    <string name="item_lock_app">Lock App</string>
+    <string name="item_lock_desc">Require PIN to access</string>
+    <string name="item_logout">Log Out</string>
+    <string name="item_logout_desc">Sign out of account</string>
+
+    <string name="content_desc_chevron_right">Go to section</string>
+
+    <string name="title_scan">Scanner</string>
+    <string name="subtitle_scan">Choose scanning mode</string>
+
+    <string name="scan_price_check_title">Price Check</string>
+    <string name="scan_price_check_desc">Quick product lookup</string>
+
+    <string name="scan_add_cart_title">Add to Cart</string>
+    <string name="scan_add_cart_desc">Scan items for checkout</string>
+
+    <string name="content_desc_scan_icon">Scanner indicator</string>
+
+    <string name="title_stock">Stock</string>
+    <string name="stock_product_count_placeholder">%d products</string>
+    <string name="btn_add_product">Add</string>
+    <string name="hint_search_products">Search products…</string>
+    <string name="empty_state_stock">No products found matching your filters.</string>
+
+    <string name="dropdown_hint_categories">Category</string>
+    <string name="dropdown_hint_stock_status">Stock Status</string>
+
+
 </resources>

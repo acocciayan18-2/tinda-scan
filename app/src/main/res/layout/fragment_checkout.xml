@@ -7,7 +7,6 @@
     android:background="#F7F8FA"
     android:fitsSystemWindows="true">
 
-    <!-- HEADER: Matching the Order History Style -->
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -33,20 +32,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/notosansbold"
-            android:text="Checkout"
+            android:text="@string/title_checkout"
             android:textColor="@android:color/black"
             android:textSize="20sp" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <!-- CONTENT BODY -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Scrollable Item List -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -60,20 +57,19 @@
                 android:orientation="vertical" />
         </ScrollView>
 
-        <!-- Confirm Button (Anchored at bottom) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_confirm_checkout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Confirm Checkout"
-            android:textAllCaps="false"
             android:fontFamily="@font/notosanssemibold"
-            android:textSize="16sp"
+            android:paddingVertical="12dp"
+            android:text="@string/button_confirm_checkout"
+            android:textAllCaps="false"
             android:textColor="@color/white"
+            android:textSize="16sp"
             app:backgroundTint="@color/primaryColor"
-            app:cornerRadius="12dp"
-            android:paddingVertical="12dp"/>
+            app:cornerRadius="12dp" />
 
     </LinearLayout>
 

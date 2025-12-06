@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create Account"
+            android:text="@string/create_account_title"
             android:textSize="28sp"
             android:textColor="@color/primaryColor"
             android:fontFamily="@font/notosansbold"
@@ -25,17 +25,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start managing your Sari-sari store today."
+            android:text="@string/create_account_description"
             android:textSize="14sp"
             android:textColor="#666666"
             android:layout_marginBottom="32dp"/>
 
-        <!-- Store Name -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Store Name"
+            android:hint="@string/hint_store_name"
             android:layout_marginBottom="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -45,12 +44,11 @@
                 android:inputType="textCapWords"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Email -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email Address"
+            android:hint="@string/hint_email"
             android:layout_marginBottom="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -60,12 +58,11 @@
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Password -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/hint_password"
             app:passwordToggleEnabled="true"
             android:layout_marginBottom="24dp">
 
@@ -76,24 +73,22 @@
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Register Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create Account &amp; Set PIN"
+            android:text="@string/button_create_account"
             app:cornerRadius="8dp"
             android:paddingVertical="14dp"
             android:fontFamily="@font/notosanssemibold"
             app:backgroundTint="@color/primaryColor"
             android:textColor="@color/white"/>
 
-        <!-- Login Link -->
         <TextView
             android:id="@+id/tv_login_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Already have an account? Login"
+            android:text="@string/login_link"
             android:layout_gravity="center"
             android:layout_marginTop="24dp"
             android:textColor="@color/secondaryColor"

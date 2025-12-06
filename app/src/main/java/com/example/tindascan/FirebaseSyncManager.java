@@ -27,9 +27,8 @@ public class FirebaseSyncManager {
     private FirebaseFirestore db;
     private final DatabaseHelper dbHelper;
     private final Context context;
-    private final Handler mainHandler; // 🔥 To post updates to UI
+    private final Handler mainHandler;
 
-    // 🔥 Flag to track cancellation
     private volatile boolean isCancelled = false;
 
     public interface SyncCallback {
@@ -84,9 +83,7 @@ public class FirebaseSyncManager {
         mainHandler.post(action);
     }
 
-    // ==========================================
-    // 📤 EXPORT ALL DATA (BACKUP)
-    // ==========================================
+    // EXPORT ALL DATA (BACKUP)
     public void exportAllData(SyncCallback callback) {
         isCancelled = false;
 
@@ -181,7 +178,6 @@ public class FirebaseSyncManager {
 
                                 callback.onSuccess("Backup complete!");
                             } else {
-                                // 🔥 FIX: Ensure cancellation is reported even if upload finishes
                                 runOnUI(() -> callback.onFailure("Backup Cancelled."));
                             }
                         })
@@ -193,9 +189,9 @@ public class FirebaseSyncManager {
         }).start();
     }
 
-    // ==========================================
-    // 📥 IMPORT ALL DATA (RESTORE WITH ROLLBACK)
-    // ==========================================
+
+    //  IMPORT ALL DATA (RESTORE WITH ROLLBACK)
+
     public void importAllData(SyncCallback callback) {
         isCancelled = false;
 
@@ -229,7 +225,6 @@ public class FirebaseSyncManager {
                 return;
             }
 
-            // 🔥 Execute DB operations in background thread to prevent UI freeze
             new Thread(() -> saveDataToLocalDb(pSnap, tSnap, dSnap, totalItems, callback)).start();
 
         }).addOnFailureListener(e -> callback.onFailure("Download Error: " + e.getMessage()));
@@ -294,7 +289,6 @@ public class FirebaseSyncManager {
             } else {
                 runOnUI(() -> callback.onFailure("Database Error: " + e.getMessage()));
             }
-            // Transaction automatically rolls back here in 'finally' block
         } finally {
             dbHelper.endTransaction();
         }

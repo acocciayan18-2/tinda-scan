@@ -12,6 +12,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:src="@drawable/ic_lock"
+        android:contentDescription="@string/content_description_lock"
         app:tint="@color/primaryColor"
         android:layout_marginBottom="24dp"/>
 
@@ -19,7 +20,7 @@
         android:id="@+id/tv_pin_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter PIN"
+        android:text="@string/pin_title"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
@@ -30,13 +31,12 @@
         android:id="@+id/tv_pin_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please enter your 4-digit PIN"
+        android:text="@string/pin_message"
         android:textSize="14sp"
         android:textColor="#666666"
         android:fontFamily="@font/notosansregular"
         android:layout_marginBottom="32dp"/>
 
-    <!-- PIN Dots Indicator -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,44 +49,42 @@
         <View android:id="@+id/dot_4" style="@style/PinDotStyle"/>
     </LinearLayout>
 
-    <!-- Keypad -->
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="3"
         android:rowCount="4">
 
-        <Button style="@style/PinButtonStyle" android:text="1" android:onClick="onKeyClick"/>
-        <Button style="@style/PinButtonStyle" android:text="2" android:onClick="onKeyClick"/>
-        <Button style="@style/PinButtonStyle" android:text="3" android:onClick="onKeyClick"/>
+        <Button style="@style/PinButtonStyle" android:text="@string/keypad_key_1" android:onClick="onKeyClick"/>
+        <Button style="@style/PinButtonStyle" android:text="@string/keypad_key_2" android:onClick="onKeyClick"/>
+        <Button style="@style/PinButtonStyle" android:text="@string/keypad_key_3" android:onClick="onKeyClick"/>
 
-        <Button style="@style/PinButtonStyle" android:text="4" android:onClick="onKeyClick"/>
-        <Button style="@style/PinButtonStyle" android:text="5" android:onClick="onKeyClick"/>
-        <Button style="@style/PinButtonStyle" android:text="6" android:onClick="onKeyClick"/>
+        <Button style="@style/PinButtonStyle" android:text="@string/keypad_key_4" android:onClick="onKeyClick"/>
+        <Button style="@style/PinButtonStyle" android:text="@string/keypad_key_5" android:onClick="onKeyClick"/>
+        <Button style="@style/PinButtonStyle" android:text="@string/keypad_key_6" android:onClick="onKeyClick"/>
 
-        <Button style="@style/PinButtonStyle" android:text="7" android:onClick="onKeyClick"/>
-        <Button style="@style/PinButtonStyle" android:text="8" android:onClick="onKeyClick"/>
-        <Button style="@style/PinButtonStyle" android:text="9" android:onClick="onKeyClick"/>
+        <Button style="@style/PinButtonStyle" android:text="@string/keypad_key_7" android:onClick="onKeyClick"/>
+        <Button style="@style/PinButtonStyle" android:text="@string/keypad_key_8" android:onClick="onKeyClick"/>
+        <Button style="@style/PinButtonStyle" android:text="@string/keypad_key_9" android:onClick="onKeyClick"/>
 
-        <View android:layout_width="70dp" android:layout_height="70dp" android:layout_margin="8dp"/> <!-- Spacer -->
-        <Button style="@style/PinButtonStyle" android:text="0" android:onClick="onKeyClick"/>
+        <View android:layout_width="70dp" android:layout_height="70dp" android:layout_margin="8dp"/> <Button style="@style/PinButtonStyle" android:text="@string/keypad_key_0" android:onClick="onKeyClick"/>
         <ImageButton
             android:id="@+id/btn_backspace"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_margin="8dp"
             android:src="@drawable/ic_backspace"
+            android:contentDescription="@string/content_description_backspace"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:tint="#666666"
             android:onClick="onBackspaceClick"/>
     </GridLayout>
 
-    <!-- 🔥 NEW: Forgot PIN Link -->
     <TextView
         android:id="@+id/tv_forgot_pin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Forgot PIN?"
+        android:text="@string/forgot_pin"
         android:textSize="14sp"
         android:textColor="@color/primaryColor"
         android:fontFamily="@font/notosanssemibold"

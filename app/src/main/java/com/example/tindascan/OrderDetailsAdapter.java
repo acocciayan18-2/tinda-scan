@@ -49,7 +49,6 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
             tvName.setText(detail.getProductName());
             tvQty.setText(String.format(Locale.US, "%dx", detail.getQuantity()));
 
-            // Calculate total price for this item
             double itemTotal = detail.getPriceAtSale() * detail.getQuantity();
             tvPrice.setText(String.format(Locale.US, "₱%.2f", itemTotal));
         }

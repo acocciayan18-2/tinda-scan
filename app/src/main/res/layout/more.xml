@@ -11,7 +11,6 @@
     android:fillViewport="true"
     tools:context=".More">
 
-    <!-- Changed height to match_parent so it stretches to fill screen -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,7 +27,7 @@
                 android:id="@+id/tv_more_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="More"
+                android:text="@string/title_more"
                 android:textSize="32sp"
                 android:textColor="@android:color/black"
                 android:fontFamily="@font/notosansbold" />
@@ -37,11 +36,10 @@
                 android:id="@+id/tv_more_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Settings and options"
+                android:text="@string/subtitle_more"
                 android:textSize="14sp"
                 android:fontFamily="@font/notosansregular" />
         </LinearLayout>
-
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_orders_history"
@@ -70,7 +68,8 @@
                         android:layout_height="28dp"
                         android:src="@drawable/ic_history"
                         app:tint="@android:color/black"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/item_orders_history"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
@@ -86,7 +85,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Orders History"
+                        android:text="@string/item_orders_history"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:fontFamily="@font/notosanssemibold" />
@@ -94,7 +93,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="View all past orders"
+                        android:text="@string/item_orders_desc"
                         android:textColor="#666666"
                         android:textSize="13sp"
                         android:fontFamily="@font/notosansregular" />
@@ -107,11 +106,11 @@
                     android:src="@drawable/ic_chevron_right"
                     app:tint="#AEAEAE"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/content_desc_chevron_right" />
 
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
-
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_settings"
@@ -139,7 +138,8 @@
                         android:layout_height="28dp"
                         android:src="@drawable/ic_settings_gear"
                         app:tint="@android:color/black"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/item_settings"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
@@ -155,7 +155,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Settings"
+                        android:text="@string/item_settings"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:fontFamily="@font/notosanssemibold" />
@@ -163,7 +163,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="App preferences"
+                        android:text="@string/item_settings_desc"
                         android:textColor="#666666"
                         android:textSize="13sp"
                         android:fontFamily="@font/notosansregular" />
@@ -176,11 +176,11 @@
                     android:src="@drawable/ic_chevron_right"
                     app:tint="#AEAEAE"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/content_desc_chevron_right" />
 
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
-
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_export"
@@ -207,7 +207,8 @@
                         android:layout_height="28dp"
                         android:src="@drawable/ic_download"
                         app:tint="@android:color/black"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/item_export"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
@@ -215,6 +216,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_toEndOf="@id/icon_bg_export"
+                    android:layout_toStartOf="@id/arrow_export"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp">
@@ -222,7 +224,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Export Data"
+                        android:text="@string/item_export"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:fontFamily="@font/notosanssemibold" />
@@ -230,16 +232,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Backup your data"
+                        android:text="@string/item_export_desc"
                         android:textColor="#666666"
                         android:textSize="13sp"
                         android:fontFamily="@font/notosansregular" />
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/arrow_export"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="#AEAEAE"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/content_desc_chevron_right" />
 
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
-
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_import"
@@ -266,7 +276,8 @@
                         android:layout_height="28dp"
                         android:src="@drawable/ic_upload"
                         app:tint="@android:color/black"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/item_import"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
@@ -274,6 +285,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_toEndOf="@id/icon_bg_import"
+                    android:layout_toStartOf="@id/arrow_import"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp">
@@ -281,7 +293,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Import Data"
+                        android:text="@string/item_import"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:fontFamily="@font/notosanssemibold" />
@@ -289,17 +301,25 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Restore from backup"
+                        android:text="@string/item_import_desc"
                         android:textColor="#666666"
                         android:textSize="13sp"
                         android:fontFamily="@font/notosansregular" />
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/arrow_import"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="#AEAEAE"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/content_desc_chevron_right" />
 
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Lock App Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_lock_app"
             style="@style/CardStyle.WhiteClickable"
@@ -319,14 +339,13 @@
                     app:cardElevation="0dp"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    app:cardBackgroundColor="#E3F2FD"> <!-- Light Blue -->
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_lock"
-                        app:tint="@color/primaryColor"
-                        android:layout_gravity="center"/>
+                    app:cardBackgroundColor="#E3F2FD"> <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_lock"
+                    app:tint="@color/primaryColor"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/item_lock_app"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
@@ -334,6 +353,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_toEndOf="@id/icon_bg_lock"
+                    android:layout_toStartOf="@id/arrow_lock"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp">
@@ -341,7 +361,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lock App"
+                        android:text="@string/item_lock_app"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:fontFamily="@font/notosanssemibold" />
@@ -349,17 +369,25 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Require PIN to access"
+                        android:text="@string/item_lock_desc"
                         android:textColor="#666666"
                         android:textSize="13sp"
                         android:fontFamily="@font/notosansregular" />
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/arrow_lock"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="#AEAEAE"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/content_desc_chevron_right" />
 
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Log Out Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_logout"
             style="@style/CardStyle.WhiteClickable"
@@ -385,7 +413,8 @@
                         android:layout_height="28dp"
                         android:src="@drawable/ic_logout"
                         app:tint="@android:color/black"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/item_logout"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
@@ -393,6 +422,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_toEndOf="@id/icon_bg_logout"
+                    android:layout_toStartOf="@id/arrow_logout"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp">
@@ -400,7 +430,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Log Out"
+                        android:text="@string/item_logout"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:fontFamily="@font/notosanssemibold" />
@@ -408,12 +438,21 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sign out of account"
+                        android:text="@string/item_logout_desc"
                         android:textColor="#666666"
                         android:textSize="13sp"
                         android:fontFamily="@font/notosansregular" />
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/arrow_logout"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="#AEAEAE"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/content_desc_chevron_right" />
 
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>

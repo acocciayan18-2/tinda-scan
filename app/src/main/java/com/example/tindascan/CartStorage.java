@@ -20,18 +20,15 @@ public class CartStorage {
         prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
-    // ✅ CHANGED to save List<CartItem>
     public void saveCart(List<CartItem> cartItems) {
         String json = gson.toJson(cartItems);
         prefs.edit().putString(KEY_CART_ITEMS, json).apply();
     }
 
-    // ✅ CHANGED to return List<CartItem>
     public List<CartItem> loadCart() {
         String json = prefs.getString(KEY_CART_ITEMS, null);
         if (json == null) return new ArrayList<>();
 
-        // ✅ CHANGED to reflect List<CartItem>
         Type type = new TypeToken<List<CartItem>>() {}.getType();
         return gson.fromJson(json, type);
     }
